@@ -1,0 +1,10 @@
+langchain
+langchain[openai]
+langchain_community
+
+langgraph
+
+fastapi[standard]
+pydantic
+
+dotenv
