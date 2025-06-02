@@ -11,6 +11,8 @@ import {
   LineChart,
   Line,
   Legend,
+  ReferenceArea,
+  Area,
 } from "recharts";
 import ReactDOM from "react-dom/client";
 
@@ -32,7 +34,11 @@ const componentsMap = {
   ResponsiveContainer: ResponsiveContainer,
   BarChart: BarChart,
   Bar: Bar,
+  Area: Area,
+  ReferenceArea: ReferenceArea,
 };
+
+const rootsMap: Record<string, ReactDOM.Root> = {};
 
 /**
  * Transforms and renders a component from JSX string
@@ -49,6 +55,10 @@ export function transformAndRenderComponent(
   containerId: string = "artifact-container"
 ): TransformationResult {
   try {
+    console.log("componentName", componentName);
+    console.log("rechartComponents", rechartComponents);
+    console.log("componentJsx", componentJsx);
+
     // Remove React and Recharts imports
     componentJsx = componentJsx.replace(
       /import React from ['"]react['"];?\s*/g,
@@ -103,7 +113,16 @@ export function transformAndRenderComponent(
       throw new Error(`Container element with id '${containerId}' not found.`);
     }
 
-    const root = ReactDOM.createRoot(container);
+    // Reuse existing root or create a new one
+    let root: ReactDOM.Root;
+    if (rootsMap[containerId]) {
+      root = rootsMap[containerId];
+    } else {
+      root = ReactDOM.createRoot(container);
+      rootsMap[containerId] = root;
+    }
+
+    // Render the component
     root.render(React.createElement(DynamicReactComponent));
 
     return { success: true };
@@ -123,9 +142,16 @@ export function transformAndRenderComponent(
 }
 
 export async function fetchComponentData(
-  apiUrl: string = "http://localhost:8000/generative-ui"
+  apiUrl: string = "http://localhost:8000/rechart/generate",
+  prompt: string
 ) {
-  const response = await fetch(apiUrl);
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ prompt }),
+  });
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);

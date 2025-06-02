@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from services.rechart import generate_ui
+from routes import rechart
 
 app = FastAPI()
 
@@ -16,13 +16,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-def hello():
-    return {"message": "hello"}
-
-
-@app.get("/generative-ui")
-def generative_ui():
-    response = generate_ui()
-    return {"message": response}
+app.include_router(rechart.router)

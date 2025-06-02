@@ -6,5 +6,6 @@ langgraph
 
 fastapi[standard]
 pydantic
+uvicorn[standard]
 
 dotenv

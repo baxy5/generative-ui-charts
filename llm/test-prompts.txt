@@ -1,0 +1,34 @@
+Line Chart Prompts --------------------------
+"Create a line chart showing hemoglobin levels over time from 2021 to 2025, with the reference range displayed as a shaded area."
+"Generate a line chart to track cholesterol levels (total, HDL, LDL) across all test dates with different colored lines for each type."
+"Create a multi-line chart showing white blood cell count (WBC) trends over time, with a separate line for the patient's average."
+
+Bar Chart Prompts --------------------------
+"Create a bar chart comparing the most recent liver enzyme values (GOT, GPT, GGT, ALP) to their reference ranges."
+"Generate a grouped bar chart showing electrolyte levels (Na, K) from the last three test dates."
+"Create a horizontal bar chart of all flagged test values from the most recent test, sorted by percentage deviation from the normal range."
+
+Area Chart Prompts --------------------------
+"Create an area chart showing blood glucose levels over time with colored zones indicating normal, elevated, and high ranges."
+"Generate a stacked area chart showing the proportions of different white blood cell types (neutrophils, lymphocytes, monocytes) across all test dates."
+"Create an area chart displaying total cholesterol with HDL and LDL components stacked, tracking changes from 2021 to 2025."
+
+Composed Chart Prompts --------------------------
+"Create a composed chart with bars showing liver enzyme levels and a line showing total bilirubin across all test dates."
+"Generate a chart with LDL cholesterol as bars and triglycerides as a line graph to track cardiovascular risk factors over time."
+"Create a composed chart with blood cell counts as bars and hemoglobin as a line to visualize overall blood health from 2021 to 2025."
+
+Scatter Chart Prompts --------------------------
+"Create a scatter plot showing the relationship between LDL cholesterol and triglycerides across all test dates."
+"Generate a scatter chart plotting hemoglobin values against red blood cell count with points sized by MCV value."
+"Create a bubble chart with neutrophil count on the x-axis, lymphocyte count on the y-axis, and bubble size representing white blood cell count."
+
+Pie Chart Prompts --------------------------
+"Create a pie chart showing the distribution of different white blood cell types (neutrophils, lymphocytes, monocytes, eosinophils, basophils) from the most recent test."
+"Generate a pie chart displaying the proportion of normal vs. abnormal test results from the April 2025 blood panel."
+"Create a donut chart showing cholesterol composition (HDL, LDL, and remaining) as percentages of total cholesterol."
+
+Radar Chart Prompts --------------------------
+"Create a radar chart comparing key blood metrics (hemoglobin, WBC, platelets, glucose, creatinine) against their reference midpoints."
+"Generate a radar chart showing how liver function tests (GOT, GPT, GGT, ALP, Bilirubin) compare between the 2023 and 2025 tests."
+"Create a multi-radar chart comparing complete blood count parameters across three test dates, with each parameter normalized to its reference range."

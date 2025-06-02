@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { Grid3X3, Plus } from "lucide-react";
 import {
   fetchComponentData,
   transformAndRenderComponent,
@@ -8,14 +7,20 @@ import {
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>("");
 
   const handleTransformAndRender = async () => {
     setError(null);
 
     try {
-      // Fetch component data from API
+      setIsLoading(true);
+
       const { componentJsx, componentName, rechartComponents } =
-        await fetchComponentData();
+        await fetchComponentData(
+          "http://localhost:8000/rechart/generate",
+          prompt
+        );
 
       // Transform and render the component
       const result = transformAndRenderComponent(
@@ -47,18 +52,39 @@ export default function Home() {
       if (container) {
         container.innerHTML = `<div style="color: red; padding: 20px;">${errMsg}</div>`;
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
+      {/* Chart placeholder container */}
+      <div className="flex-1 p-6">
+        <div
+          id="artifact-container"
+          className={`w-full h-[26rem] bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center
+            ${isLoading ? "animate-pulse bg-gray-100" : ""}`}
+        ></div>
+      </div>
+
+      {/* Chat */}
       <div className="p-6">
-        <button
-          onClick={handleTransformAndRender}
-          className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-        >
-          Transform JSX & Render Component
-        </button>
+        <div className="mb-4">
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 mb-2"
+            rows={2}
+            placeholder="Enter your chart prompt here..."
+          />
+          <button
+            onClick={handleTransformAndRender}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer"
+          >
+            Generate Chart
+          </button>
+        </div>
         {error && (
           <div className="mb-4 p-3 bg-red-700 text-white rounded-md">
             {error}
@@ -66,37 +92,30 @@ export default function Home() {
         )}
       </div>
 
-      {/* Chart placeholder container */}
-      <div className="flex-1 p-6">
-        <div
-          id="artifact-container"
-          className="w-full h-96 bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center"
-        >
-          <div className="text-gray-400 text-center">
-            <Grid3X3 className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Chart will be displayed here</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Chat interface */}
-      <div className="p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gray-800 rounded-2xl border border-gray-700 p-4">
-            <div className="flex items-center gap-3">
-              <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                <Plus className="w-5 h-5 text-gray-400" />
-              </button>
-
-              <div className="flex-1 flex items-center gap-3">
-                <input
-                  type="text"
-                  placeholder="Appic"
-                  className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none text-lg"
-                />
-              </div>
-            </div>
-          </div>
+      {/* Chart prompt suggestions */}
+      <div className="px-6 pb-6">
+        <h3 className="text-white mb-2 font-medium">Try these prompts:</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <button
+            onClick={() =>
+              setPrompt(
+                "Create a line chart showing cholesterol levels (total, HDL, LDL) across all test dates with different colored lines for each type."
+              )
+            }
+            className="p-2 bg-gray-800 text-sm text-gray-300 rounded hover:bg-gray-700 text-left cursor-pointer"
+          >
+            Line chart: Track cholesterol levels over time
+          </button>
+          <button
+            onClick={() =>
+              setPrompt(
+                "Create a bar chart comparing the most recent liver enzyme values (GOT, GPT, GGT, ALP) to their reference ranges."
+              )
+            }
+            className="p-2 bg-gray-800 text-sm text-gray-300 rounded hover:bg-gray-700 text-left cursor-pointer"
+          >
+            Bar chart: Liver enzyme comparison
+          </button>
         </div>
       </div>
     </div>
