@@ -13,6 +13,19 @@ import {
   Legend,
   ReferenceArea,
   Area,
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  AreaChart,
+  ComposedChart,
+  Scatter,
+  ScatterChart,
+  PieChart,
+  Pie,
+  Cell,
+  Sector,
 } from "recharts";
 import ReactDOM from "react-dom/client";
 
@@ -36,8 +49,24 @@ const componentsMap = {
   Bar: Bar,
   Area: Area,
   ReferenceArea: ReferenceArea,
+  Radar: Radar,
+  RadarChart: RadarChart,
+  PolarGrid: PolarGrid,
+  PolarAngleAxis: PolarAngleAxis,
+  PolarRadiusAxis: PolarRadiusAxis,
+  AreaChart: AreaChart,
+  ComposedChart: ComposedChart,
+  Scatter: Scatter,
+  ScatterChart: ScatterChart,
+  PieChart: PieChart,
+  Pie: Pie,
+  Cell: Cell,
+  Sector: Sector,
 };
 
+// TODO: Something still wrong with the rootsMap
+/* You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() 
+before. Instead, call root.render() on the existing root instead if you want to update it. */
 const rootsMap: Record<string, ReactDOM.Root> = {};
 
 /**
