@@ -1,41 +1,38 @@
 "use client";
 import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import * as Babel from "@babel/standalone";
 import { Grid3X3, Plus } from "lucide-react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  LineChart,
-  Line,
-  Legend,
-} from "recharts";
+  fetchComponentData,
+  transformAndRenderComponent,
+} from "../utils/transformComponent";
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   const handleTransformAndRender = async () => {
     setError(null);
-    let componentJsx = "";
-    let componentName = "";
-    let rechartComponents = [];
 
     try {
-      const response = await fetch("http://localhost:8000/generative-ui");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("data", data);
+      // Fetch component data from API
+      const { componentJsx, componentName, rechartComponents } =
+        await fetchComponentData();
 
-      componentJsx = data.message.component;
-      componentName = data.message.name;
-      rechartComponents = data.message.rechartComponents;
+      // Transform and render the component
+      const result = transformAndRenderComponent(
+        componentJsx,
+        componentName,
+        rechartComponents
+      );
+
+      // Handle any errors
+      if (!result.success && result.error) {
+        setError(result.error);
+
+        const container = document.getElementById("artifact-container");
+        if (container) {
+          container.innerHTML = `<div style="color: red; padding: 20px;">${result.error}</div>`;
+        }
+      }
     } catch (err: unknown) {
       let errMsg = "Failed to fetch JSX from API.";
       if (err instanceof Error) {
@@ -48,105 +45,8 @@ export default function Home() {
 
       const container = document.getElementById("artifact-container");
       if (container) {
-        container.innerHTML = `<div style=\"color: red; padding: 20px;\">${errMsg}</div>`;
+        container.innerHTML = `<div style="color: red; padding: 20px;">${errMsg}</div>`;
       }
-
-      return;
-    }
-
-    /* if (typeof Babel === "undefined" || typeof Babel.transform !== "function") {
-      const errMsg =
-        "Babel (from @babel/standalone) is not loaded or not available. Ensure it's installed and imported correctly.";
-      console.error(errMsg);
-      setError(errMsg);
-      const container = document.getElementById("artifact-container");
-      if (container) {
-        container.innerHTML = `<div style=\"color: red; padding: 20px;\">${errMsg}</div>`;
-      }
-      return;
-    } */
-
-    try {
-      // TODO: Remove the imports from the component in the ai response
-      componentJsx = componentJsx.replace(
-        /import React from ['"]react['"];?\s*/g,
-        ""
-      );
-      componentJsx = componentJsx.replace(
-        /import\s+\{\s*[^}]*\}\s+from\s+['"]recharts['"];?\s*/g,
-        ""
-      );
-
-      const transformResult = Babel.transform(componentJsx, {
-        presets: ["react"],
-      });
-
-      const transformedCode = transformResult.code;
-      console.log("Transformed Code:", transformedCode);
-
-      if (!transformedCode) {
-        throw new Error("Babel transformation resulted in empty code.");
-      }
-
-      const codeWithoutExport = transformedCode.replace(
-        new RegExp(`export default ${componentName};?`),
-        `return ${componentName};`
-      );
-
-      const componentsMap = {
-        React: React,
-        LineChart: LineChart,
-        Line: Line,
-        XAxis: XAxis,
-        YAxis: YAxis,
-        CartesianGrid: CartesianGrid,
-        Tooltip: Tooltip,
-        Legend: Legend,
-        ResponsiveContainer: ResponsiveContainer,
-        BarChart: BarChart,
-        Bar: Bar,
-      };
-
-      const componentArgs = ["React", ...rechartComponents].map(
-        (name) => componentsMap[name as keyof typeof componentsMap]
-      );
-
-      const componentFactory = new Function(
-        "React",
-        ...rechartComponents,
-        codeWithoutExport
-      );
-      console.log("componentFactory", componentFactory);
-
-      const DynamicReactComponent = componentFactory(...componentArgs);
-      console.log("DynamicReactComponent type:", typeof DynamicReactComponent);
-      console.log("DynamicReactComponent value:", DynamicReactComponent);
-
-      if (typeof DynamicReactComponent !== "function") {
-        throw new Error(
-          "Transformation did not result in a callable component function."
-        );
-      }
-
-      const container = document.getElementById("artifact-container");
-      if (container) {
-        const root = ReactDOM.createRoot(container);
-        root.render(React.createElement(DynamicReactComponent));
-      } else {
-        const errMsg =
-          "Artifact container (id='artifact-container') not found in the DOM.";
-        console.error(errMsg);
-        setError(errMsg);
-      }
-    } catch (e: unknown) {
-      let errorMessage = "An unknown error occurred.";
-      if (e instanceof Error) {
-        errorMessage = e.message;
-      } else if (typeof e === "string") {
-        errorMessage = e;
-      }
-      console.error("Error during JSX transformation or rendering:", e);
-      setError(`Transformation/Rendering Error: ${errorMessage}`);
     }
   };
 
