@@ -50,7 +50,7 @@ export default function Home() {
 
       const container = document.getElementById("artifact-container");
       if (container) {
-        container.innerHTML = `<div style="color: red; padding: 20px;">${errMsg}</div>`;
+        container.innerHTML = `<div style="color: red; padding: 20px;">Unable to generate chart. Please try again.</div>`;
       }
     } finally {
       setIsLoading(false);
@@ -59,13 +59,53 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      {/* Chart placeholder container */}
-      <div className="flex-1 p-6">
+      {/* Artifact container */}
+
+      <div className="flex flex-wrap gap-4 p-6">
         <div
           id="artifact-container"
-          className={`w-full h-[26rem] bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center
+          className={`w-full min-h-[23rem] h-full bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center
             ${isLoading ? "animate-pulse bg-gray-100" : ""}`}
         ></div>
+        {/* <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
+          <h3 className="text-xl font-semibold text-white mb-1">
+            Chart Generation
+          </h3>
+          <h4 className="text-md text-gray-400 mb-2">
+            Interactive Data Visualization
+          </h4>
+          <p className="text-sm text-gray-300">
+            The chart below will update based on your input. Use the text area
+            to specify the type of chart and the data you wish to see.
+            Suggestions are provided to help you get started.
+          </p>
+        </div>
+        <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
+          <h3 className="text-xl font-semibold text-white mb-1">
+            Chart Generation
+          </h3>
+          <h4 className="text-md text-gray-400 mb-2">
+            Interactive Data Visualization
+          </h4>
+          <p className="text-sm text-gray-300">
+            The chart below will update based on your input. Use the text area
+            to specify the type of chart and the data you wish to see.
+            Suggestions are provided to help you get started.
+          </p>
+        </div>
+        <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
+          <h3 className="text-xl font-semibold text-white mb-1">
+            Chart Generation
+          </h3>
+          <h4 className="text-md text-gray-400 mb-2">
+            Interactive Data Visualization
+          </h4>
+          <p className="text-sm text-gray-300">
+            The chart below will update based on your input. Use the text area
+            to specify the type of chart and the data you wish to see.
+            Suggestions are provided to help you get started.
+          </p>
+        </div> */}
       </div>
 
       {/* Chat */}
@@ -74,7 +114,7 @@ export default function Home() {
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            className="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 mb-2"
+            className="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 mb-2 outline-none"
             rows={2}
             placeholder="Enter your chart prompt here..."
           />
