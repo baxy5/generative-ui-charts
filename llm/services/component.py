@@ -42,7 +42,7 @@ def create_messages(user_prompt):
             8. Create multiple components for the data, don't use the same component for all data.
             9. Don't use comments in the code.
             10. Each card component must have a border.
-            11. Maximum width of the card component is 15rem. (use w-full and max-w-[15rem] for the card component)
+            11. Maximum width of the card component is 15rem. (use max-w-[15rem] for the card component)
             12. Container element of the card components must have a "flex flex-wrap gap-4" class.
             
             Design guidelines:
