@@ -80,10 +80,11 @@ const rootsMap: Record<string, ReactDOM.Root> = {};
 export function transformAndRenderComponent(
   componentJsx: string,
   componentName: string,
-  rechartComponents: string[],
-  containerId: string = "artifact-container"
+  containerId: string,
+  rechartComponents?: string[]
 ): TransformationResult {
   try {
+    console.log("containerId", containerId);
     console.log("componentName", componentName);
     console.log("rechartComponents", rechartComponents);
     console.log("componentJsx", componentJsx);
@@ -117,14 +118,14 @@ export function transformAndRenderComponent(
     );
 
     // Get component arguments
-    const componentArgs = ["React", ...rechartComponents].map(
+    const componentArgs = ["React", ...(rechartComponents || [])].map(
       (name) => componentsMap[name as keyof typeof componentsMap]
     );
 
     // Create component factory function
     const componentFactory = new Function(
       "React",
-      ...rechartComponents,
+      ...(rechartComponents || []),
       codeWithoutExport
     );
 
@@ -170,10 +171,7 @@ export function transformAndRenderComponent(
   }
 }
 
-export async function fetchComponentData(
-  apiUrl: string = "http://localhost:8000/rechart/generate",
-  prompt: string
-) {
+export async function fetchComponentData(apiUrl: string, prompt: string) {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -188,9 +186,5 @@ export async function fetchComponentData(
 
   const data = await response.json();
 
-  return {
-    componentJsx: data.message.component,
-    componentName: data.message.name,
-    rechartComponents: data.message.rechartComponents,
-  };
+  return data.message;
 }

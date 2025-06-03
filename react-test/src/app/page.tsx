@@ -10,22 +10,75 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("");
 
+  const handleComponentRender = async () => {
+    setError(null);
+
+    try {
+      setIsLoading(true);
+
+      const data = await fetchComponentData(
+        "http://localhost:8000/component/generate",
+        prompt
+      );
+
+      const componentJsx = data.component;
+      const componentName = data.name;
+
+      const result = transformAndRenderComponent(
+        componentJsx,
+        componentName,
+        "artifact-component-container"
+      );
+
+      if (!result.success && result.error) {
+        setError(result.error);
+
+        const container = document.getElementById(
+          "artifact-component-container"
+        );
+        if (container) {
+          container.innerHTML = `<div style="color: red; padding: 20px;">${result.error}</div>`;
+        }
+      }
+    } catch (err: unknown) {
+      let errMsg = "Failed to fetch JSX from API.";
+      if (err instanceof Error) {
+        errMsg = `Failed to fetch JSX from API: ${err.message}`;
+      } else if (typeof err === "string") {
+        errMsg = `Failed to fetch JSX from API: ${err}`;
+      }
+      console.error(errMsg, err);
+      setError(errMsg);
+
+      const container = document.getElementById("artifact-component-container");
+      if (container) {
+        container.innerHTML = `<div style="color: red; padding: 20px;">Unable to generate chart. Please try again.</div>`;
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleTransformAndRender = async () => {
     setError(null);
 
     try {
       setIsLoading(true);
 
-      const { componentJsx, componentName, rechartComponents } =
-        await fetchComponentData(
-          "http://localhost:8000/rechart/generate",
-          prompt
-        );
+      const data = await fetchComponentData(
+        "http://localhost:8000/rechart/generate",
+        prompt
+      );
+
+      const componentJsx = data.component;
+      const componentName = data.name;
+      const rechartComponents = data.rechartComponents || undefined;
 
       // Transform and render the component
       const result = transformAndRenderComponent(
         componentJsx,
         componentName,
+        "artifact-container",
         rechartComponents
       );
 
@@ -59,57 +112,28 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      {/* Artifact container */}
-
+      {/* Artifact containers */}
       <div className="flex flex-wrap gap-4 p-6">
+        <div
+          id="artifact-component-container"
+          className={`w-full min-h-[23rem] h-full bg-gray-800 rounded-lg border border-gray-700 p-4
+            ${isLoading ? "animate-pulse bg-gray-100" : ""}`}
+        ></div>
         <div
           id="artifact-container"
           className={`w-full min-h-[23rem] h-full bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center
             ${isLoading ? "animate-pulse bg-gray-100" : ""}`}
         ></div>
-        {/* <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
-          <h3 className="text-xl font-semibold text-white mb-1">
-            Chart Generation
-          </h3>
-          <h4 className="text-md text-gray-400 mb-2">
-            Interactive Data Visualization
-          </h4>
-          <p className="text-sm text-gray-300">
-            The chart below will update based on your input. Use the text area
-            to specify the type of chart and the data you wish to see.
-            Suggestions are provided to help you get started.
-          </p>
-        </div>
-        <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
-          <h3 className="text-xl font-semibold text-white mb-1">
-            Chart Generation
-          </h3>
-          <h4 className="text-md text-gray-400 mb-2">
-            Interactive Data Visualization
-          </h4>
-          <p className="text-sm text-gray-300">
-            The chart below will update based on your input. Use the text area
-            to specify the type of chart and the data you wish to see.
-            Suggestions are provided to help you get started.
-          </p>
-        </div>
-        <div className="bg-gray-800 max-w-[400px] w-full p-4 rounded-lg border border-gray-700">
-          <h3 className="text-xl font-semibold text-white mb-1">
-            Chart Generation
-          </h3>
-          <h4 className="text-md text-gray-400 mb-2">
-            Interactive Data Visualization
-          </h4>
-          <p className="text-sm text-gray-300">
-            The chart below will update based on your input. Use the text area
-            to specify the type of chart and the data you wish to see.
-            Suggestions are provided to help you get started.
-          </p>
-        </div> */}
       </div>
 
       {/* Chat */}
       <div className="p-6">
+        <button
+          onClick={handleComponentRender}
+          className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer"
+        >
+          Generate Component
+        </button>
         <div className="mb-4">
           <textarea
             value={prompt}

@@ -1,0 +1,56 @@
+# Medical Data Text Component Prompts
+
+## Summary Components
+
+1. Test Result Summary
+"Generate a concise summary highlighting abnormal lab values and significant changes from previous tests."
+
+2. Medical Snapshot
+"Create a current health status text component showing key metrics with arrows indicating changes from last test."
+
+3. Health Trends Analysis
+"Analyze the health data trends over time and generate a narrative describing the patterns observed across multiple test dates."
+
+## Detailed Reports
+
+4. Abnormal Values Report
+"Create a detailed report of all flagged test values with medical context explaining potential causes and implications."
+
+5. Category-Based Insight
+"Generate an analysis focusing only on cardiac panel results with explanations of the relationships between cholesterol types."
+
+6. Reference Range Contextualizer
+"Create a component that explains where each abnormal result falls within its reference range and the clinical significance."
+
+## Patient Communication
+
+7. Simplified Results Explanation
+"Generate a patient-friendly explanation of these lab results avoiding medical jargon and focusing on key health indicators."
+
+8. Follow-up Recommendations
+"Based on these test results, create a text component suggesting appropriate follow-up actions and timeframes."
+
+9. Medical Timeline
+"Create a chronological narrative showing how key health metrics have evolved from 2021 to 2025."
+
+## Clinical Decision Support
+
+10. Risk Factor Summary
+"Generate a text component identifying potential health risk factors based on patterns in cholesterol, glucose, and liver function tests."
+
+11. Treatment Response Analysis
+"Create an analysis showing how the test results have changed over time in response to potential treatments."
+
+12. Comparative Analysis
+"Generate a text component comparing the most recent test results to the patient's historical average and typical results for their demographic."
+
+## Structured Information
+
+13. Health Metric Cards
+"Create a set of individual text cards for hemoglobin, cholesterol, and glucose with trend indicators and brief explanations."
+
+14. Test Category Tables
+"Generate a structured table-like text component grouping liver function tests with color-coded status indicators."
+
+15. Medical Dictionary Context
+"Create a glossary component defining medical terms like 'HDL', 'LDL', and 'hemoglobin' as they appear in these test results." 

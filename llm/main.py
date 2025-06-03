@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import rechart
+from routes import rechart, component
 
 app = FastAPI()
 
@@ -17,3 +17,4 @@ app.add_middleware(
 )
 
 app.include_router(rechart.router)
+app.include_router(component.router)
