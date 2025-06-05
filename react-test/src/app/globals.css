@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+.custom-scroll {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: var(--accent-primary) var(--bg-primary); /* For Firefox */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px; /* For WebKit browsers */
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--accent-primary); /* Using accent primary color */
+  border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background-color: var(--bg-secondary); /* Using secondary background */
+}
+
 :root {
   /* Background colors */
   --bg-dark: #292f33;
@@ -20,6 +38,29 @@
   /* Accent colors */
   --accent-dark: #053d33;
   --accent-primary: #13856c;
+
+  /* Typography scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+
+  /* Line heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 }
 
 body {
@@ -67,4 +108,70 @@ body {
 }
 .accent-primary {
   color: var(--accent-primary);
+}
+
+/* Typography utility classes */
+.title-main {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  margin-block-end: 1rem;
+}
+
+.title-section {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  margin-block-end: 0.75rem;
+}
+
+.title-subsection {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  margin-block-end: 0.5rem;
+}
+
+.title-card {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  margin-block-end: 0.5rem;
+}
+
+.text-regular {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+}
+
+.text-small {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.text-caption {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+}
+
+.metric-large {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.metric-medium {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.metric-small {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.text-center {
+  text-align: center;
 }

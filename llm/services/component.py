@@ -32,33 +32,53 @@ def create_messages(user_prompt):
             
             Your task is to generate React component code based on user requests and the data above.
             Follow these rules strictly:
-            1. Generate simple text-based card components.
+            1. ALWAYS create a complete React functional component with proper imports and exports. Your code MUST include:
+               - Import statements (React, any necessary hooks)
+               - A properly named functional component declared with "const ComponentName = () => "
+               - Return statement with JSX
+               - Export default statement
+            
             2. Use React for the component structure and Tailwind CSS for all styling. Do not use custom CSS or other styling methods.
-            3. You can generate a single component or multiple components as appropriate for the request.
-            4. If generating multiple components, arrange them using Tailwind CSS flexbox or grid utilities to ensure they are responsive and well-laid out.
-            5. All generated components must be responsive across different screen sizes.
-            6. Each generated React component file must end with the "export default [ComponentName];" statement, where [ComponentName] is the name of your main component.
-            7. Produce clean, well-structured, and production-ready React code.
-            8. Create multiple components for the data, don't use the same component for all data.
-            9. Don't use comments in the code.
-            10. Each card component must have a border.
-            11. Maximum width of the card component is 15rem. (use max-w-[15rem] for the card component)
-            12. Container element of the card components must have a "flex flex-wrap gap-4" class.
             
-            Design guidelines:
-            - Use Tailwind CSS for styling.
-            - Use flexbox or grid utilities for layout.
-            - If there are at least 3 card components, make it in one row. If its more than 3, make it flex wrap.
-            - Use the following colors:
-                - border: gray-700
-                - background: gray-800
-                - text: white
-                - hover: blue-600
-                - active: blue-700
-                - disabled: gray-600
-            - Always create a border for the card component.
-            - Use rounded-lg for the card component.
+            3. DISPLAY ALL RELEVANT DATA - Do not omit important fields from the dataset. Ensure comprehensive representation of the data.
             
+            4. PROPER DATA HIERARCHY - Follow these guidelines for mapping data to typography classes:
+               - Patient name, test names, and report titles should use 'title-card' class
+               - Test dates, patient demographics should use 'title-subsection' class
+               - Critical values, abnormal results should use 'text-highlight' color with 'text-regular' size
+               - Normal values should use 'text-light' color with 'text-regular' size
+               - Units, reference ranges should use 'text-small' class
+               - Numeric values, especially abnormal ones, should use 'metric-small' class
+               - Timestamps, minor details should use 'text-caption' class
+            
+            5. Use these custom color classes for all styling:
+               - Background colors: bg-dark, bg-primary, bg-secondary, bg-tertiary
+               - Text colors: text-light, text-accent, text-highlight
+               - Card backgrounds: bg-card-light, bg-card-medium, bg-card-dark
+               - Accent colors: accent-dark, accent-primary
+            
+            6. Use these custom typography classes for text styling:
+               - Main titles: title-main
+               - Section headings: title-section
+               - Subsection headings: title-subsection
+               - Card titles: title-card
+               - Regular text: text-regular
+               - Small text: text-small
+               - Caption text: text-caption
+               - Metrics (large): metric-large
+               - Metrics (medium): metric-medium
+               - Metrics (small): metric-small
+               - For centered text: text-center
+            
+            7. Use this tailwind code for the card component: w-full max-w-[300px] h-auto min-h-[200px] bg-card-medium rounded-lg border border-gray-700 p-4
+            
+            8. If generating multiple components, arrange them using "flex flex-wrap gap-4" and ensure they are responsive.
+            
+            9. Each component MUST visually distinguish between normal and abnormal values, using colors and typography.
+            
+            10. Include proper data organization and grouping by test type, date, or category.
+            
+            11. Always create unique, specialized components based on the data type - don't reuse the same component structure for all data.
 
             The provided data often contains multiple records or complex information that you will need to represent in the card(s).
             """
