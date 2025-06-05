@@ -10,14 +10,14 @@ interface ChatProps {
 
 const Chat = ({ prompt, setPrompt, handleSubmit, isLoading }: ChatProps) => {
   return (
-    <div className="max-w-md mx-auto bg-gray-800 rounded-lg shadow-md p-4">
+    <div className="max-w-5xl mx-auto bg-gray-800 rounded-lg shadow-md p-4">
       <div className="flex items-center">
         <textarea
           placeholder="Ask anything"
           className="flex-grow p-2 rounded-lg bg-gray-700 text-white focus:outline-none min-h-[40px] max-h-[200px] resize-none"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          rows={3}
+          rows={2}
         />
       </div>
       <div className="flex items-center justify-between pt-4">
