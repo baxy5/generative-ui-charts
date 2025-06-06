@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-from langchain.chat_models import init_chat_model
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
@@ -27,8 +27,13 @@ def get_data(path: str):
     return data
 
 
-def create_structured_model(schema):
-    """Create a structured model."""
-    model = init_chat_model("gpt-4o-mini", model_provider="openai")
-    model_with_structured_output = model.with_structured_output(schema)
-    return model_with_structured_output
+def get_gpt_client():
+    """Get the GPT client."""
+    if not OPENAI_API_KEY:
+        raise ValueError("OPENAI_API_KEY is not set")
+    else:
+        gpt_client = ChatOpenAI(
+            model="gpt-4o-mini",
+            api_key=OPENAI_API_KEY,
+        )
+        return gpt_client
