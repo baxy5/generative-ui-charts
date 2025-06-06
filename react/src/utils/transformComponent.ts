@@ -186,5 +186,5 @@ export async function fetchComponentData(apiUrl: string, prompt: string) {
 
   const data = await response.json();
 
-  return data.message;
+  return data;
 }
