@@ -25,7 +25,7 @@ class ComponentService:
 
         try:
             component_response = await self.agent.generate_ui_component(
-                request=request, data=data
+                question=request.prompt, data=data
             )
             return component_response
         except Exception as e:

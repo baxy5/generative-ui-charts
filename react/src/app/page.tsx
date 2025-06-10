@@ -17,7 +17,7 @@ export default function Home() {
     try {
       setIsLoading(true);
       const data = await fetchComponentData(
-        "http://localhost:8000/rechart/generate",
+        "http://localhost:8000/component/generate",
         prompt
       );
 
