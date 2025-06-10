@@ -175,3 +175,89 @@ body {
 .text-center {
   text-align: center;
 }
+
+/* Custom padding utility classes */
+.padding-xs {
+  padding: 0.25rem;
+}
+
+.padding-sm {
+  padding: 0.5rem;
+}
+
+.padding-md {
+  padding: 1rem;
+}
+
+.padding-lg {
+  padding: 1.5rem;
+}
+
+.padding-xl {
+  padding: 2rem;
+}
+
+.padding-2xl {
+  padding: 3rem;
+}
+
+/* Directional padding utilities */
+.padding-x-xs {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.padding-y-xs {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.padding-x-sm {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.padding-y-sm {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.padding-x-md {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.padding-y-md {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.padding-x-lg {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.padding-y-lg {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.padding-x-xl {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.padding-y-xl {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.padding-x-2xl {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.padding-y-2xl {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}

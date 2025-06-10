@@ -80,10 +80,10 @@ const rootsMap: Record<string, ReactDOM.Root> = {};
 export function transformAndRenderComponent(
   componentJsx: string,
   componentName: string,
-  containerId: string,
   rechartComponents?: string[]
 ): TransformationResult {
   try {
+    const containerId = componentName;
     console.log("containerId", containerId);
     console.log("componentName", componentName);
     console.log("rechartComponents", rechartComponents);

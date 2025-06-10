@@ -17,7 +17,7 @@ export default function Home() {
     try {
       setIsLoading(true);
       const data = await fetchComponentData(
-        "http://localhost:8000/component/generate",
+        "http://localhost:8000/test/generate",
         prompt
       );
 
@@ -25,10 +25,17 @@ export default function Home() {
       const componentName = data.name;
       const rechartComponents = data.rechartComponents || undefined;
 
+      const artifactContaienr = document.getElementById("artifact");
+      if (artifactContaienr) {
+        const componentDiv = document.createElement("div");
+        componentDiv.id = componentName;
+        artifactContaienr.appendChild(componentDiv);
+        console.log(artifactContaienr);
+      }
+
       const result = transformAndRenderComponent(
         componentJsx,
         componentName,
-        "artifact",
         rechartComponents
       );
 
