@@ -261,3 +261,304 @@ body {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
+
+.kpi-box {
+  @apply border-2 border-[var(--bg-tertiary)] rounded-2xl w-full max-w-[300px] flex flex-col items-center justify-center p-4;
+}
+
+.kpi-box #title {
+  @apply text-3xl pb-4;
+}
+
+.kpi-box #metric {
+  @apply text-xl pb-4;
+}
+
+.kpi-box #difference-positive {
+  @apply text-green-500 text-xl pb-4;
+}
+
+.kpi-box #difference-negative {
+  @apply text-red-500 text-xl pb-4;
+}
+
+.kpi-box #description {
+  @apply text-lg pb-4 text-center;
+}
+
+/* Hero Sections */
+.hero-section {
+  @apply w-full p-8 rounded-lg border border-[var(--bg-tertiary)] bg-[var(--bg-secondary)] mb-8;
+}
+
+.hero-section-variant-elevated {
+  @apply shadow-lg bg-[var(--bg-tertiary)];
+}
+
+.hero-section .hero-title {
+  @apply text-4xl font-bold mb-4 text-[var(--text-light)];
+}
+
+.hero-section .hero-subtitle {
+  @apply text-2xl font-medium mb-6 text-[var(--text-accent)];
+}
+
+.hero-section .hero-content {
+  @apply text-lg mb-6;
+}
+
+.hero-section .hero-cta {
+  @apply px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-light)] rounded-md font-semibold hover:bg-[var(--accent-dark)] transition-colors;
+}
+
+/* KPI/Stat Boxes */
+.stat-box {
+  @apply border-2 rounded-xl p-4 flex flex-col items-center justify-center w-full max-w-[300px];
+  border-color: var(--bg-tertiary);
+}
+
+.stat-box-variant-minimal {
+  @apply border border-[var(--bg-tertiary)] bg-transparent;
+}
+
+.stat-box-variant-elevated {
+  @apply shadow-md bg-[var(--bg-tertiary)];
+}
+
+.stat-box .stat-title {
+  @apply text-xl font-semibold mb-2 text-center;
+}
+
+.stat-box .stat-value {
+  @apply text-3xl font-bold mb-2;
+}
+
+.stat-box .stat-change-positive {
+  @apply text-green-500 text-lg mb-2;
+}
+
+.stat-box .stat-change-negative {
+  @apply text-red-500 text-lg mb-2;
+}
+
+.stat-box .stat-change-neutral {
+  @apply text-yellow-500 text-lg mb-2;
+}
+
+.stat-box .stat-description {
+  @apply text-sm text-center;
+}
+
+/* Informational Panels */
+.info-panel {
+  @apply border rounded-lg p-5 bg-[var(--bg-secondary)] w-full mb-4;
+}
+
+.info-panel-variant-highlight {
+  @apply border-l-4 border-l-[var(--accent-primary)];
+}
+
+.info-panel-variant-alert {
+  @apply border-l-4 border-l-red-500 bg-red-900/20;
+}
+
+.info-panel .info-title {
+  @apply text-xl font-semibold mb-3;
+}
+
+.info-panel .info-content {
+  @apply text-base mb-3;
+}
+
+.info-panel .info-footer {
+  @apply text-sm text-[var(--text-accent)];
+}
+
+/* Data Tables */
+.data-table-container {
+  @apply w-full overflow-x-auto rounded-lg border border-[var(--bg-tertiary)];
+}
+
+.data-table {
+  @apply w-full border-collapse;
+}
+
+.data-table th {
+  @apply bg-[var(--bg-tertiary)] p-3 text-left font-semibold border-b border-[var(--bg-tertiary)];
+}
+
+.data-table td {
+  @apply p-3 border-b border-[var(--bg-tertiary)];
+}
+
+.data-table tr:hover {
+  @apply bg-[var(--bg-tertiary)]/50;
+}
+
+.data-table-variant-compact th,
+.data-table-variant-compact td {
+  @apply p-2 text-sm;
+}
+
+.data-table .value-positive {
+  @apply text-green-500;
+}
+
+.data-table .value-negative {
+  @apply text-red-500;
+}
+
+.data-table .value-neutral {
+  @apply text-yellow-500;
+}
+
+/* Highlight Boxes */
+.highlight-box {
+  @apply p-4 rounded-lg border border-[var(--accent-primary)] bg-[var(--accent-dark)]/30 mb-4;
+}
+
+.highlight-box-variant-light {
+  @apply bg-[var(--bg-secondary)] border-[var(--accent-primary)];
+}
+
+.highlight-box .highlight-title {
+  @apply text-lg font-semibold mb-2 text-[var(--text-accent)];
+}
+
+.highlight-box .highlight-content {
+  @apply text-base;
+}
+
+/* Subject/Topic Descriptions */
+.topic-card {
+  @apply border rounded-lg p-5 bg-[var(--bg-secondary)] w-full mb-4;
+}
+
+.topic-card-variant-featured {
+  @apply border-2 border-[var(--accent-primary)] bg-[var(--bg-tertiary)];
+}
+
+.topic-card .topic-title {
+  @apply text-xl font-semibold mb-2;
+}
+
+.topic-card .topic-subtitle {
+  @apply text-lg font-medium mb-3 text-[var(--text-accent)];
+}
+
+.topic-card .topic-description {
+  @apply text-base mb-3;
+}
+
+.topic-card .topic-metadata {
+  @apply text-sm text-[var(--text-accent)];
+}
+
+/* Status Badges */
+.status-badge {
+  @apply inline-block px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.status-badge-positive {
+  @apply bg-green-900/50 text-green-400 border border-green-700;
+}
+
+.status-badge-negative {
+  @apply bg-red-900/50 text-red-400 border border-red-700;
+}
+
+.status-badge-neutral {
+  @apply bg-yellow-900/50 text-yellow-400 border border-yellow-700;
+}
+
+.status-badge-info {
+  @apply bg-blue-900/50 text-blue-400 border border-blue-700;
+}
+
+/* Tag Clusters / Keyword Clouds */
+.tag-container {
+  @apply flex flex-wrap gap-2 mb-4;
+}
+
+.tag {
+  @apply px-3 py-1 rounded-md text-sm bg-[var(--bg-tertiary)] inline-block;
+}
+
+.tag-variant-outlined {
+  @apply bg-transparent border border-[var(--bg-tertiary)];
+}
+
+.tag-primary {
+  @apply bg-[var(--accent-primary)]/30 text-[var(--text-accent)];
+}
+
+.tag-secondary {
+  @apply bg-[var(--bg-tertiary)] text-[var(--text-light)];
+}
+
+/* Lists */
+.custom-list {
+  @apply pl-5 mb-4;
+}
+
+.custom-list li {
+  @apply mb-2;
+}
+
+.custom-list-ordered {
+  @apply list-decimal;
+}
+
+.custom-list-unordered {
+  @apply list-disc;
+}
+
+.custom-list-variant-spaced li {
+  @apply mb-4;
+}
+
+.custom-list .list-item-title {
+  @apply font-semibold text-[var(--text-accent)];
+}
+
+.custom-list .list-item-content {
+  @apply block mt-1;
+}
+
+/* Card Grid */
+.card-grid {
+  @apply grid gap-4 w-full;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.card {
+  @apply border rounded-lg overflow-hidden bg-[var(--bg-secondary)];
+}
+
+.card-variant-elevated {
+  @apply shadow-md;
+}
+
+.card-variant-bordered {
+  @apply border-2 border-[var(--bg-tertiary)];
+}
+
+.card .card-header {
+  @apply p-4 border-b border-[var(--bg-tertiary)] bg-[var(--bg-tertiary)];
+}
+
+.card .card-title {
+  @apply text-lg font-semibold;
+}
+
+.card .card-subtitle {
+  @apply text-sm text-[var(--text-accent)];
+}
+
+.card .card-body {
+  @apply p-4;
+}
+
+.card .card-footer {
+  @apply p-4 border-t border-[var(--bg-tertiary)] bg-[var(--bg-tertiary)]/50;
+}

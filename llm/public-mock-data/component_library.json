@@ -1,0 +1,476 @@
+[
+  {
+    "componentName": "Hero Section",
+    "description": "A large, prominent section used at the top of a page to introduce key content. It typically includes a main title, a subtitle, descriptive text, and a call-to-action button.",
+    "baseClass": "hero-section",
+    "useCases": [
+      "Introducing a new product or feature.",
+      "Displaying a high-level summary of a report or dashboard.",
+      "Welcoming a user to a new section of the application."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "The standard hero section with a secondary background color."
+      },
+      {
+        "name": "Elevated",
+        "class": "hero-section-variant-elevated",
+        "description": "A more prominent version with a tertiary background and shadow."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".hero-title",
+        "htmlTag": "h1",
+        "description": "The main heading of the section."
+      },
+      {
+        "selector": ".hero-subtitle",
+        "htmlTag": "h2",
+        "description": "A secondary heading that provides more context."
+      },
+      {
+        "selector": ".hero-content",
+        "htmlTag": "p",
+        "description": "A paragraph of text for more detailed information."
+      },
+      {
+        "selector": ".hero-cta",
+        "htmlTag": "button",
+        "description": "A call-to-action button to guide user interaction."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"hero-section\">\n  <h1 class=\"hero-title\">Q3 Financial Performance</h1>\n  <h2 class=\"hero-subtitle\">Exceeding expectations in challenging markets</h2>\n  <p class=\"hero-content\">Our company has demonstrated remarkable resilience this quarter, with strong performance across key metrics.</p>\n  <button class=\"hero-cta\">View Full Report</button>\n</div>"
+    }
+  },
+  {
+    "componentName": "Statistic Box",
+    "description": "Displays a single key performance indicator (KPI) or a significant metric. Ideal for dashboards and summaries to show a value, its title, and change over time.",
+    "baseClass": "stat-box",
+    "useCases": [
+      "Displaying revenue, user count, or other key metrics.",
+      "Summarizing data in a visually distinct block.",
+      "Showing growth or decline with color-coded indicators."
+    ],
+    "variants": [
+      {
+        "name": "Minimal",
+        "class": "stat-box-variant-minimal",
+        "description": "A simple stat box with a border and transparent background."
+      },
+      {
+        "name": "Elevated",
+        "class": "stat-box-variant-elevated",
+        "description": "A card-like version with a background color and shadow, making it stand out."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".stat-title",
+        "htmlTag": "h2",
+        "description": "The title or label for the metric (e.g., 'Revenue', 'Active Users')."
+      },
+      {
+        "selector": ".stat-value",
+        "htmlTag": "span",
+        "description": "The primary value of the metric (e.g., '$1.2M', '1,500')."
+      },
+      {
+        "selector": ".stat-change-positive",
+        "htmlTag": "span",
+        "description": "Indicates a positive change (e.g., '+15%'). Styled in green."
+      },
+      {
+        "selector": ".stat-change-negative",
+        "htmlTag": "span",
+        "description": "Indicates a negative change (e.g., '-5%'). Styled in red."
+      },
+      {
+        "selector": ".stat-change-neutral",
+        "htmlTag": "span",
+        "description": "Indicates a neutral or minor change. Styled in yellow."
+      },
+      {
+        "selector": ".stat-description",
+        "htmlTag": "p",
+        "description": "A short, descriptive text providing context for the metric."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"stat-box stat-box-variant-elevated\">\n  <h2 class=\"stat-title\">Revenue</h2>\n  <span class=\"stat-value\">$35,000,000</span>\n  <span class=\"stat-change-positive\">+35%</span>\n  <p class=\"stat-description\">Year-over-year growth</p>\n</div>"
+    }
+  },
+  {
+    "componentName": "Informational Panel",
+    "description": "A versatile container for displaying grouped information, such as alerts, summaries, or notifications.",
+    "baseClass": "info-panel",
+    "useCases": [
+      "Providing contextual information or summaries.",
+      "Displaying alerts or warnings.",
+      "Highlighting key insights from a dataset."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "A standard panel with a border and secondary background."
+      },
+      {
+        "name": "Highlight",
+        "class": "info-panel-variant-highlight",
+        "description": "A panel with a prominent left accent border to draw attention."
+      },
+      {
+        "name": "Alert",
+        "class": "info-panel-variant-alert",
+        "description": "A panel with a red accent border and background, used for critical alerts."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".info-title",
+        "htmlTag": "h3",
+        "description": "The title of the information panel."
+      },
+      {
+        "selector": ".info-content",
+        "htmlTag": "p",
+        "description": "The main body of text within the panel."
+      },
+      {
+        "selector": ".info-footer",
+        "htmlTag": "span",
+        "description": "A footer for metadata, like timestamps or sources."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"info-panel info-panel-variant-highlight\">\n  <h3 class=\"info-title\">Quarterly Insights</h3>\n  <p class=\"info-content\">This quarter showed exceptional growth in our enterprise segment.</p>\n  <span class=\"info-footer\">Last updated: June 2023</span>\n</div>"
+    }
+  },
+  {
+    "componentName": "Data Table",
+    "description": "A structured component for displaying tabular data with headers and rows. Best used for detailed breakdowns, comparisons, or lists of records.",
+    "baseClass": "data-table",
+    "useCases": [
+      "Displaying yearly financial reports.",
+      "Listing user data or product inventories.",
+      "Comparing features across different products."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "The standard data table with regular padding."
+      },
+      {
+        "name": "Compact",
+        "class": "data-table-variant-compact",
+        "description": "A table with reduced padding for displaying more data in a smaller space."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".data-table-container",
+        "htmlTag": "div",
+        "description": "A required wrapper for the table to enable overflow scrolling and consistent styling."
+      },
+      {
+        "selector": "th",
+        "htmlTag": "th",
+        "description": "Table header cells. Should contain the title for each column."
+      },
+      {
+        "selector": "td",
+        "htmlTag": "td",
+        "description": "Table data cells. Contains the individual data points for each row."
+      },
+      {
+        "selector": ".value-positive",
+        "htmlTag": "td",
+        "description": "A class applied to a 'td' or 'span' to indicate a positive value (styled green)."
+      },
+      {
+        "selector": ".value-negative",
+        "htmlTag": "td",
+        "description": "A class applied to a 'td' or 'span' to indicate a negative value (styled red)."
+      },
+      {
+        "selector": ".value-neutral",
+        "htmlTag": "td",
+        "description": "A class applied to a 'td' or 'span' to indicate a neutral value (styled yellow)."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"data-table-container\">\n  <table class=\"data-table\">\n    <thead>\n      <tr>\n        <th>Region</th>\n        <th>Sales</th>\n        <th>Growth</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td>North America</td>\n        <td>$12,450,000</td>\n        <td class=\"value-positive\">+24%</td>\n      </tr>\n      <tr>\n        <td>Europe</td>\n        <td>$8,320,000</td>\n        <td class=\"value-negative\">-3%</td>\n      </tr>\n    </tbody>\n  </table>\n</div>"
+    }
+  },
+  {
+    "componentName": "Highlight Box",
+    "description": "A box designed to feature a key insight, summary, or important piece of information. It uses accent colors to stand out from other content.",
+    "baseClass": "highlight-box",
+    "useCases": [
+      "Summarizing the key takeaway from a chart or table.",
+      "Displaying an important alert or finding.",
+      "Featuring a quote or a critical piece of data."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "A standard highlight box with a dark accent background."
+      },
+      {
+        "name": "Light",
+        "class": "highlight-box-variant-light",
+        "description": "A lighter version with a secondary background and an accent border."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".highlight-title",
+        "htmlTag": "h3",
+        "description": "The title of the highlighted content."
+      },
+      {
+        "selector": ".highlight-content",
+        "htmlTag": "p",
+        "description": "The main content of the box."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"highlight-box\">\n  <h3 class=\"highlight-title\">Key Finding</h3>\n  <p class=\"highlight-content\">Mobile users generate 64% more revenue than desktop users.</p>\n</div>"
+    }
+  },
+  {
+    "componentName": "Topic Card",
+    "description": "A card used to introduce a subject or topic. It's ideal for displaying a title, subtitle, a short description, and related metadata.",
+    "baseClass": "topic-card",
+    "useCases": [
+      "Describing a project, initiative, or program.",
+      "Creating a profile for a person or a team.",
+      "Introducing a new section in a report."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "A standard card with a border."
+      },
+      {
+        "name": "Featured",
+        "class": "topic-card-variant-featured",
+        "description": "A more prominent version with a thicker accent border and different background, suitable for highlighting key topics."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".topic-title",
+        "htmlTag": "h3",
+        "description": "The main title of the topic."
+      },
+      {
+        "selector": ".topic-subtitle",
+        "htmlTag": "h4",
+        "description": "A subtitle to provide additional context."
+      },
+      {
+        "selector": ".topic-description",
+        "htmlTag": "p",
+        "description": "A paragraph of text describing the topic."
+      },
+      {
+        "selector": ".topic-metadata",
+        "htmlTag": "div",
+        "description": "A container for metadata such as author, date, or tags."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"topic-card topic-card-variant-featured\">\n  <h3 class=\"topic-title\">Sustainability Initiative</h3>\n  <h4 class=\"topic-subtitle\">Carbon Neutral by 2025</h4>\n  <p class=\"topic-description\">Our commitment to environmental stewardship has led to a significant reduction in emissions.</p>\n</div>"
+    }
+  },
+  {
+    "componentName": "Status Badge",
+    "description": "A small, inline element used to convey status information. It uses color to indicate states like positive, negative, neutral, or informational.",
+    "baseClass": "status-badge",
+    "useCases": [
+      "Indicating the status of a project (e.g., 'Completed', 'In Progress').",
+      "Tagging items in a list (e.g., 'Success', 'Failed').",
+      "Showing the result of an operation."
+    ],
+    "variants": [
+      {
+        "name": "Positive",
+        "class": "status-badge-positive",
+        "description": "Indicates a successful or positive state (green)."
+      },
+      {
+        "name": "Negative",
+        "class": "status-badge-negative",
+        "description": "Indicates a failed or negative state (red)."
+      },
+      {
+        "name": "Neutral",
+        "class": "status-badge-neutral",
+        "description": "Indicates a pending or neutral state (yellow)."
+      },
+      {
+        "name": "Info",
+        "class": "status-badge-info",
+        "description": "Provides general information (blue)."
+      }
+    ],
+    "elements": [],
+    "usageExample": {
+      "jsx": "<div>\n  <span class=\"status-badge status-badge-positive\">Completed</span>\n  <span class=\"status-badge status-badge-negative\">Failed</span>\n  <span class=\"status-badge status-badge-neutral\">In Progress</span>\n</div>"
+    }
+  },
+  {
+    "componentName": "Tag",
+    "description": "A compact element used to label or categorize items. Tags are often displayed in a group or cloud.",
+    "baseClass": "tag",
+    "useCases": [
+      "Labeling blog posts with keywords.",
+      "Categorizing products or services.",
+      "Displaying skills or technologies in a profile."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "A standard tag with a tertiary background."
+      },
+      {
+        "name": "Outlined",
+        "class": "tag-variant-outlined",
+        "description": "A tag with a transparent background and a border."
+      },
+      {
+        "name": "Primary",
+        "class": "tag-primary",
+        "description": "A tag with a primary accent color, used for emphasis."
+      },
+      {
+        "name": "Secondary",
+        "class": "tag-secondary",
+        "description": "A tag with a light text color on a tertiary background."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".tag-container",
+        "htmlTag": "div",
+        "description": "A container for multiple tags, ensuring proper spacing and wrapping."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"tag-container\">\n  <span class=\"tag tag-primary\">Electronics</span>\n  <span class=\"tag tag-secondary\">Apparel</span>\n  <span class=\"tag tag-variant-outlined\">Books</span>\n</div>"
+    }
+  },
+  {
+    "componentName": "Custom List",
+    "description": "A styled list for displaying ordered or unordered items. Supports enhanced styling for list items with titles and content.",
+    "baseClass": "custom-list",
+    "useCases": [
+      "Displaying a sequence of steps or instructions.",
+      "Listing features of a product.",
+      "Presenting a table of contents."
+    ],
+    "variants": [
+      {
+        "name": "Ordered",
+        "class": "custom-list-ordered",
+        "description": "A numbered list."
+      },
+      {
+        "name": "Unordered",
+        "class": "custom-list-unordered",
+        "description": "A bulleted list."
+      },
+      {
+        "name": "Spaced",
+        "class": "custom-list-variant-spaced",
+        "description": "A list with extra vertical spacing between items."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".list-item-title",
+        "htmlTag": "span",
+        "description": "The title for a list item, styled with an accent color."
+      },
+      {
+        "selector": ".list-item-content",
+        "htmlTag": "span",
+        "description": "The descriptive content for a list item, appearing below the title."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<ol class=\"custom-list custom-list-ordered custom-list-variant-spaced\">\n  <li>\n    <span class=\"list-item-title\">Market Expansion</span>\n    <span class=\"list-item-content\">Enter three new European markets.</span>\n  </li>\n  <li>\n    <span class=\"list-item-title\">Product Development</span>\n    <span class=\"list-item-content\">Launch mobile-first platform update.</span>\n  </li>\n</ol>"
+    }
+  },
+  {
+    "componentName": "Card",
+    "description": "A flexible and extensible content container. It includes options for headers, footers, and content, and can be arranged in a grid.",
+    "baseClass": "card",
+    "useCases": [
+      "Displaying a summary of an item in a collection (e.g., a product, a user profile).",
+      "Creating modular layouts for dashboards.",
+      "Presenting information in a structured and repeatable format."
+    ],
+    "variants": [
+      {
+        "name": "Default",
+        "class": "",
+        "description": "A standard card with a border."
+      },
+      {
+        "name": "Elevated",
+        "class": "card-variant-elevated",
+        "description": "A card with a shadow to make it appear lifted."
+      },
+      {
+        "name": "Bordered",
+        "class": "card-variant-bordered",
+        "description": "A card with a thicker border for emphasis."
+      }
+    ],
+    "elements": [
+      {
+        "selector": ".card-grid",
+        "htmlTag": "div",
+        "description": "A responsive grid container for laying out multiple cards."
+      },
+      {
+        "selector": ".card-header",
+        "htmlTag": "div",
+        "description": "The header section of the card, often containing a title and subtitle."
+      },
+      {
+        "selector": ".card-title",
+        "htmlTag": "h4",
+        "description": "The main title within the card header."
+      },
+      {
+        "selector": ".card-subtitle",
+        "htmlTag": "p",
+        "description": "A subtitle or additional context in the card header."
+      },
+      {
+        "selector": ".card-body",
+        "htmlTag": "div",
+        "description": "The main content area of the card."
+      },
+      {
+        "selector": ".card-footer",
+        "htmlTag": "div",
+        "description": "The footer section of the card, often used for actions or metadata."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"card-grid\">\n  <div class=\"card card-variant-elevated\">\n    <div class=\"card-header\">\n      <h4 class=\"card-title\">Sales Team</h4>\n      <p class=\"card-subtitle\">Enterprise Division</p>\n    </div>\n    <div class=\"card-body\">\n      <p>Exceeded quarterly targets by 18%.</p>\n    </div>\n    <div class=\"card-footer\">\n      <span class=\"status-badge status-badge-positive\">Top Performer</span>\n    </div>\n  </div>\n</div>"
+    }
+  }
+]
