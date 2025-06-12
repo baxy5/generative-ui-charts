@@ -14,11 +14,30 @@ export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
 
   const handleSubmit = async () => {
+    if (!prompt.trim()) return;
+
+    // Add user message to artifact container
+    const artifactContainer = document.getElementById("artifact");
+    if (artifactContainer) {
+      const userMessageDiv = document.createElement("div");
+      userMessageDiv.className = "flex justify-end w-full";
+      userMessageDiv.id = "user-chat-message";
+      userMessageDiv.innerHTML = `
+        <div class="shrink-0 bg-secondary w-full max-w-[500px] border-2 border-[#13856c] px-4 py-2 rounded-t-lg rounded-bl-lg">
+          <p class="font-bold">${prompt}</p>
+        </div>
+      `;
+      artifactContainer.appendChild(userMessageDiv);
+    }
+
+    const currentPrompt = prompt;
+    setPrompt("");
+
     try {
       setIsLoading(true);
       const data = await fetchComponentData(
         "http://localhost:8000/test/generate",
-        prompt
+        currentPrompt
       );
 
       const componentJsx = data.component;

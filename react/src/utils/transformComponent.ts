@@ -34,9 +34,14 @@ interface TransformationResult {
   error?: string;
 }
 
-// A map of all recharts components that might be used
+// A map of all recharts components and React hooks that might be used
 const componentsMap = {
   React: React,
+  useState: React.useState,
+  useEffect: React.useEffect,
+  useMemo: React.useMemo,
+  useCallback: React.useCallback,
+  useRef: React.useRef,
   LineChart: LineChart,
   Line: Line,
   XAxis: XAxis,
@@ -89,9 +94,9 @@ export function transformAndRenderComponent(
     console.log("rechartComponents", rechartComponents);
     console.log("componentJsx", componentJsx);
 
-    // Remove React and Recharts imports
+    // Remove React and Recharts imports (including destructured imports)
     componentJsx = componentJsx.replace(
-      /import React from ['"]react['"];?\s*/g,
+      /import React(?:\s*,\s*\{[^}]*\})?\s+from\s+['"]react['"];?\s*/g,
       ""
     );
 
@@ -117,15 +122,19 @@ export function transformAndRenderComponent(
       `return ${componentName};`
     );
 
-    // Get component arguments
-    const componentArgs = ["React", ...(rechartComponents || [])].map(
+    // Detect React hooks used in the component
+    const hookPattern = /\b(useState|useEffect|useMemo|useCallback|useRef)\b/g;
+    const hooksUsed = [...new Set(transformedCode.match(hookPattern) || [])];
+    
+    // Get component arguments - include React, hooks, and recharts components
+    const allComponents = ["React", ...hooksUsed, ...(rechartComponents || [])];
+    const componentArgs = allComponents.map(
       (name) => componentsMap[name as keyof typeof componentsMap]
     );
 
     // Create component factory function
     const componentFactory = new Function(
-      "React",
-      ...(rechartComponents || []),
+      ...allComponents,
       codeWithoutExport
     );
 
@@ -163,7 +172,6 @@ export function transformAndRenderComponent(
     } else if (typeof e === "string") {
       errorMessage = e;
     }
-    console.error("Error during JSX transformation or rendering:", e);
     return {
       success: false,
       error: `Transformation/Rendering Error: ${errorMessage}`,

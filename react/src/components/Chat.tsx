@@ -9,6 +9,16 @@ interface ChatProps {
 }
 
 const Chat = ({ prompt, setPrompt, handleSubmit, isLoading }: ChatProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      // Only submit if prompt is not empty (after trimming whitespace)
+      if (prompt.trim()) {
+        handleSubmit();
+      }
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto bg-gray-800 rounded-lg shadow-md p-4">
       <div className="flex items-center">
@@ -17,6 +27,7 @@ const Chat = ({ prompt, setPrompt, handleSubmit, isLoading }: ChatProps) => {
           className="flex-grow p-2 rounded-lg bg-gray-700 text-white focus:outline-none min-h-[40px] max-h-[200px] resize-none"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={handleKeyDown}
           rows={2}
         />
       </div>
@@ -24,11 +35,12 @@ const Chat = ({ prompt, setPrompt, handleSubmit, isLoading }: ChatProps) => {
         <Plus />
         <button
           onClick={handleSubmit}
-          className={`p-2 bg-blue-800 text-white rounded-lg
+          disabled={!prompt.trim() || isLoading}
+          className={`p-2 bg-[#13856ce7] text-white rounded-lg
                 ${
-                  prompt
-                    ? "opacity-100 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 cursor-pointer"
-                    : "opacity-50"
+                  prompt.trim() && !isLoading
+                    ? "opacity-100 hover:bg-[#13856c] focus:outline-none cursor-pointer"
+                    : "opacity-50 cursor-not-allowed"
                 }`}
         >
           {!isLoading && <Send size={16} />}
