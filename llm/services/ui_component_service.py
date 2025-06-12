@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import Depends, HTTPException
-from agents.test import (
+from agents.ui_component_agent import (
     UiComponentAgent,
     UiComponentRequestSchema,
     UiComponentResponseSchema,

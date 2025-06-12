@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 
-from agents.test import UiComponentRequestSchema, UiComponentResponseSchema
-from services.test import UiComponentService
+from agents.ui_component_agent import (
+    UiComponentRequestSchema,
+    UiComponentResponseSchema,
+)
+from services.ui_component_service import UiComponentService
 
 
 router = APIRouter()

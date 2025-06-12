@@ -36,7 +36,7 @@ export default function Home() {
     try {
       setIsLoading(true);
       const data = await fetchComponentData(
-        "http://localhost:8000/test/generate",
+        "http://localhost:8000/ui_component/generate",
         currentPrompt
       );
 
