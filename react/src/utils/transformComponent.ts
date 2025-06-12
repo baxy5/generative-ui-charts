@@ -83,12 +83,13 @@ const rootsMap: Record<string, ReactDOM.Root> = {};
  * @returns Object with success status and error message if any
  */
 export function transformAndRenderComponent(
+  componentId: string,
   componentJsx: string,
   componentName: string,
   rechartComponents?: string[]
 ): TransformationResult {
   try {
-    const containerId = componentName;
+    const containerId = componentId;
     console.log("containerId", containerId);
     console.log("componentName", componentName);
     console.log("rechartComponents", rechartComponents);
@@ -125,7 +126,7 @@ export function transformAndRenderComponent(
     // Detect React hooks used in the component
     const hookPattern = /\b(useState|useEffect|useMemo|useCallback|useRef)\b/g;
     const hooksUsed = [...new Set(transformedCode.match(hookPattern) || [])];
-    
+
     // Get component arguments - include React, hooks, and recharts components
     const allComponents = ["React", ...hooksUsed, ...(rechartComponents || [])];
     const componentArgs = allComponents.map(
@@ -133,10 +134,7 @@ export function transformAndRenderComponent(
     );
 
     // Create component factory function
-    const componentFactory = new Function(
-      ...allComponents,
-      codeWithoutExport
-    );
+    const componentFactory = new Function(...allComponents, codeWithoutExport);
 
     const DynamicReactComponent = componentFactory(...componentArgs);
 

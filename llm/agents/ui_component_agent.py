@@ -9,11 +9,16 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.runnables.config import RunnableConfig
 from core.common import get_gpt_client
+import uuid
 
 
 class UiComponentResponseSchema(BaseModel):
     """Schema for UI component response."""
 
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4()),
+        description="Unique component identifier.",
+    )
     name: Optional[str] = Field(default=None, description="Name of the component.")
     component: Optional[str] = Field(default=None, description="Component code.")
     rechartComponents: Optional[list[str]] = Field(
@@ -30,13 +35,14 @@ class UiComponentRequestSchema(BaseModel):
 class AgentState(TypedDict):
     """State used by the agent through the workflow"""
 
+    uuid: str
     question: str
     provided_data: str
     extracted_data: str
     component_descriptors: str
     component_schema: str
     component_type: str  # 'chart' or 'ui'
-    final_component: Optional[UiComponentResponseSchema]
+    final_response: Optional[UiComponentResponseSchema]
 
 
 class UiComponentAgent:
@@ -162,7 +168,7 @@ class UiComponentAgent:
                 # Generate Rechart component
                 messages = [
                     SystemMessage(
-                        """You are a specialized React developer skilled at creating chart components using Recharts library.
+                        f"""You are a specialized React developer skilled at creating chart components using Recharts library.
                         Your task is to create a React component with charts based on the provided data.
                         
                         IMPORTANT REQUIREMENTS:
@@ -175,11 +181,18 @@ class UiComponentAgent:
                          - Return clean, well-structured React code
                          - Include rechartComponents list with all Recharts components used
 
+                        CRITICAL UUID REQUIREMENT:
+                         - The parent/root element of your component MUST have id="{state['uuid']}"
+                         - This is the outermost container element that wraps your entire component
+                         - The parent element MUST use full width: className="w-full"
+                         - Example: <div id="{state['uuid']}" className="w-full">...</div>
+
                         LAYOUT GUIDELINES:
                          - Wrap your chart in "component-container" for consistent styling
                          - Use appropriate background colors: bg-primary, bg-secondary, bg-tertiary
                          - Use text colors: text-light, text-accent, text-highlight
                          - Apply proper spacing and padding
+                         - Ensure the parent container takes full available width
 
                         Provide your response as:
                          - name: The name of your component (PascalCase)
@@ -190,6 +203,8 @@ class UiComponentAgent:
                     HumanMessage(
                         f"""Create a Recharts component using the provided data.
                         
+                        REMEMBER: The parent element must have id="{state['uuid']}"
+                        
                         User question: {state['question']}
                         Extracted data: {state['extracted_data']}
                         """
@@ -199,7 +214,7 @@ class UiComponentAgent:
                 # Generate regular UI component
                 messages = [
                     SystemMessage(
-                        """You are a specialized React developer skilled at creating interactive UI components.
+                        f"""You are a specialized React developer skilled at creating interactive UI components.
                         Your task is to create a React component based on the provided data and UI component descriptor.
                         
                         IMPORTANT RESTRICTIONS:
@@ -208,6 +223,12 @@ class UiComponentAgent:
                          - DO NOT use any external dependencies
                          - All functionality must be self-contained within the component
                          - Use React hooks (useState, useEffect, useMemo) for interactivity
+
+                        CRITICAL UUID REQUIREMENT:
+                         - The parent/root element of your component MUST have id="{state['uuid']}"
+                         - This is the outermost container element that wraps your entire component
+                         - The parent element MUST use full width: className="w-full"
+                         - Example: <div id="{state['uuid']}" className="w-full">...</div>
 
                         INTERACTIVITY GUIDELINES:
                          - CREATE INTERACTIVE COMPONENTS with minimal user interaction required
@@ -264,9 +285,11 @@ class UiComponentAgent:
                     HumanMessage(
                         f"""Create a React component using the provided data and the UI component descriptor schema(s).
                         
-                            UI component descriptor schema: {state['component_schema']}
-                            
-                            Provided data: {state['extracted_data']}
+                        REMEMBER: The parent element must have id="{state['uuid']}"
+                        
+                        UI component descriptor schema: {state['component_schema']}
+                        
+                        Provided data: {state['extracted_data']}
                         """
                     ),
                 ]
@@ -274,7 +297,8 @@ class UiComponentAgent:
             response = await structured_output_model.ainvoke(messages)
 
             try:
-                state["final_component"] = response
+                response.id = state['uuid']
+                state["final_response"] = response
                 return state
             except Exception as e:
                 raise HTTPException(
@@ -318,6 +342,7 @@ class UiComponentAgent:
         """Generate UI component based on the user's question and the data."""
 
         initial_state: AgentState = {
+            "uuid": f"comp_{str(uuid.uuid4()).replace('-', '')[:12]}",
             "question": question,
             "provided_data": data,
             "component_descriptors": component_descriptors or "{}",
@@ -326,8 +351,8 @@ class UiComponentAgent:
 
         result = await self.graph.ainvoke(initial_state, config=config)
 
-        if "final_component" in result and result["final_component"] is not None:
-            return result["final_component"]
+        if "final_response" in result and result["final_response"] is not None:
+            return result["final_response"]
 
         return UiComponentResponseSchema(
             name="Failed", component="Failed to generate component."

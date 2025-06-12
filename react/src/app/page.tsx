@@ -40,6 +40,7 @@ export default function Home() {
         currentPrompt
       );
 
+      const componentId = data.id;
       const componentJsx = data.component;
       const componentName = data.name;
       const rechartComponents = data.rechartComponents || undefined;
@@ -47,12 +48,14 @@ export default function Home() {
       const artifactContaienr = document.getElementById("artifact");
       if (artifactContaienr) {
         const componentDiv = document.createElement("div");
-        componentDiv.id = componentName;
+        componentDiv.id = componentId;
+        componentDiv.className = "w-full";
         artifactContaienr.appendChild(componentDiv);
         console.log(artifactContaienr);
       }
 
       const result = transformAndRenderComponent(
+        componentId,
         componentJsx,
         componentName,
         rechartComponents

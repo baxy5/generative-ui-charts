@@ -1,0 +1,105 @@
+Chart/Visualization Prompts
+Financial Performance Charts
+"Show me a line chart of TechNova's revenue growth from 2005 to 2025"
+"Create a bar chart comparing profit margins across the last 10 years"
+"Display a multi-line chart showing revenue vs expenses over time"
+"Generate a trend chart of customer acquisition costs from 2005 to 2025"
+"Show me a stacked area chart of R&D and marketing spending over the years"
+Business Metrics Visualizations
+"Create a pie chart showing revenue distribution by geographical regions"
+"Display a bar chart of employee distribution across departments"
+"Show me a line chart of customer growth and retention rates over time"
+"Generate a scatter plot showing the relationship between R&D spending and revenue"
+"Create a donut chart of revenue streams (subscriptions, services, partnerships)"
+Product & Market Analysis
+"Show me a bar chart comparing annual revenue of all four products"
+"Create a bubble chart showing market share vs customer count for each product"
+"Display a timeline chart of product launches and their impact on revenue"
+"Generate a competitive analysis chart showing market share of all competitors"
+Sustainability & Innovation Charts
+"Show me a line chart of carbon footprint reduction from 2020 to 2025"
+"Create a stacked bar chart of sustainability metrics over the years"
+"Display a progress chart of renewable energy usage targets"
+"Generate a timeline chart of R&D projects and their budgets"
+🗂️ Table/Data Display Prompts
+Sortable Financial Tables
+"Show me all yearly financial data in a table that I can sort by revenue or profit"
+"Create a table of products that can be sorted by annual revenue or market share"
+"Display yearly data in a sortable table with ascending/descending options for all metrics"
+"Generate a filterable table showing only years with profit margin above 35%"
+Employee & Leadership Tables
+"Show me employee distribution by department in a sortable table"
+"Create a table of leadership team that can be filtered by years in company"
+"Display all office locations in a table sortable by region"
+"Generate a table of R&D projects that can be sorted by budget or team size"
+Product & Customer Tables
+"Show me all products in a table that can be filtered by launch year"
+"Create a sortable table of customer metrics with search functionality"
+"Display competitor analysis in a table sortable by market share"
+"Generate a table of sustainability initiatives with status indicators"
+📋 Dashboard/Summary Prompts
+Executive Dashboard Cards
+"Create a dashboard showing key company metrics as stat boxes"
+"Display current valuation, employee count, and customer metrics as cards"
+"Generate summary cards for each product with revenue and customer data"
+"Show me KPI cards for growth rates, profit margins, and market position"
+Performance Summary Panels
+"Create informational panels highlighting our competitive advantages"
+"Display status cards for each geographical region's performance"
+"Generate highlight boxes for our most successful products"
+"Show me alert panels for any declining metrics or concerning trends"
+Leadership & Team Displays
+"Create profile cards for the leadership team with their tenure"
+"Display department cards showing employee counts and percentages"
+"Generate award and recognition cards for company achievements"
+"Show me office location cards with regional revenue data"
+📈 Interactive Component Prompts
+Multi-functional Business Displays
+"Create an interactive dashboard where I can toggle between different time periods"
+"Build a component that shows financial data with expandable details for each year"
+"Generate a filterable list of all products with their performance metrics"
+"Create tabs showing different views - financial, operational, and strategic metrics"
+Search & Filter Interfaces
+"Build a search interface where I can find specific metrics or years"
+"Create a filter system for viewing data by department, region, or product"
+"Generate a component that lets me compare performance between different years"
+"Build an interactive tool to explore correlations between different business metrics"
+🏢 Business-Specific Prompts
+Strategic Analysis Components
+"Show me our market position compared to competitors with visual indicators"
+"Create a component explaining our expansion plans with timeline and investment data"
+"Display our product portfolio with launch dates and performance metrics"
+"Generate a summary of our sustainability journey with progress indicators"
+Investor-Friendly Views
+"Create a simple view of our growth story without complex financial jargon"
+"Show me which business metrics have improved or declined over time"
+"Display our key achievements and milestones in an easy-to-understand format"
+"Generate a risk assessment view based on our performance trends"
+🔍 Advanced Analysis Prompts
+Pattern Recognition & Insights
+"Show me patterns in our financial data that indicate business health trends"
+"Create a component that identifies which metrics consistently outperform targets"
+"Display correlations between R&D spending and revenue growth"
+"Generate insights about our customer acquisition efficiency over time"
+Predictive Business Intelligence
+"Generate insights about our growth trajectory based on historical data"
+"Show me which business areas need the most attention based on trends"
+"Create a forecast view based on our historical performance patterns"
+"Display scenario analysis for different growth strategies"
+🌱 Sustainability & Innovation Prompts
+Environmental Impact Displays
+"Show me our carbon footprint reduction progress in an interactive chart"
+"Create a dashboard of all sustainability metrics with target comparisons"
+"Display our renewable energy adoption journey with milestone markers"
+"Generate a component showing the impact of our green initiatives"
+R&D and Innovation Tracking
+"Show me all current R&D projects in a sortable table with status updates"
+"Create a timeline view of our patent applications and grants"
+"Display our university partnerships with research focus areas"
+"Generate a budget allocation view for all innovation projects"
+🌍 Global Operations Prompts
+Geographic Performance Analysis
+"Show me revenue distribution across all regions in an interactive map-style component"
+"Create a table of all offices that can be filtered by region and sorted by revenue"
+"Display our expansion plans with timelines and investment requirements"
+"Generate a component comparing performance across different markets"
