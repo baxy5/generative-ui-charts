@@ -177,13 +177,18 @@ export function transformAndRenderComponent(
   }
 }
 
-export async function fetchComponentData(apiUrl: string, prompt: string) {
+export async function fetchComponentData(
+  apiUrl: string,
+  prompt: string,
+  dataset: string,
+  dataset_name: string
+) {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ prompt }),
+    body: JSON.stringify({ prompt, dataset, dataset_name }),
   });
 
   if (!response.ok) {

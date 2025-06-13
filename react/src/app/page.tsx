@@ -7,14 +7,27 @@ import {
 import Chat from "@/components/Chat";
 import SystemMessage from "@/components/SystemMessage";
 import Artifact from "@/components/Artifact";
+import { toBase64 } from "@/utils/common";
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("");
+  const [dataset, setDataset] = useState<File | null>(null);
 
   const handleSubmit = async () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim() || !dataset) {
+      setError("Both prompt and provided dataset must be filled.");
+      return;
+    }
+
+    let b64Dataset = null;
+    let datasetName = null;
+
+    if (dataset) {
+      b64Dataset = await toBase64(dataset);
+      datasetName = dataset.name;
+    }
 
     // Add user message to artifact container
     const artifactContainer = document.getElementById("artifact");
@@ -34,10 +47,13 @@ export default function Home() {
     setPrompt("");
 
     try {
+      setError(null);
       setIsLoading(true);
       const data = await fetchComponentData(
         "http://localhost:8000/ui_component/generate",
-        currentPrompt
+        currentPrompt,
+        b64Dataset as unknown as string,
+        datasetName as string
       );
 
       const componentId = data.id;
@@ -78,11 +94,13 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col p-6">
       <Artifact />
-      <div className="p-6">
-        <SystemMessage message={error} />
+      <div>
+        <SystemMessage message={error} setMessage={setError} />
         <Chat
           prompt={prompt}
           setPrompt={setPrompt}
+          dataset={dataset}
+          setDataset={setDataset}
           handleSubmit={handleSubmit}
           isLoading={isLoading}
         />
