@@ -472,5 +472,46 @@
     "usageExample": {
       "jsx": "<div class=\"card-grid\">\n  <div class=\"card card-variant-elevated\">\n    <div class=\"card-header\">\n      <h4 class=\"card-title\">Sales Team</h4>\n      <p class=\"card-subtitle\">Enterprise Division</p>\n    </div>\n    <div class=\"card-body\">\n      <p>Exceeded quarterly targets by 18%.</p>\n    </div>\n    <div class=\"card-footer\">\n      <span class=\"status-badge status-badge-positive\">Top Performer</span>\n    </div>\n  </div>\n</div>"
     }
+  },
+  {
+    "componentName": "Prompt Suggestions Box",
+    "description": "A container designed to present users with a set of clickable, predefined questions or prompts to guide their interaction with the system.",
+    "baseClass": "prompt-suggestions-container",
+    "useCases": [
+      "Providing starting points for users new to the interface.",
+      "Showcasing the types of questions the system can answer.",
+      "Helping users discover features or datasets."
+    ],
+    "variants": [],
+    "elements": [
+      {
+        "selector": ".prompt-suggestions-title",
+        "htmlTag": "h3",
+        "description": "The main title for the suggestions area."
+      },
+      {
+        "selector": ".prompt-suggestions-grid",
+        "htmlTag": "div",
+        "description": "A grid container that organizes the individual suggestion items."
+      },
+      {
+        "selector": ".prompt-suggestion-item",
+        "htmlTag": "div",
+        "description": "A clickable container for a single prompt suggestion. It has a hover effect to indicate interactivity."
+      },
+      {
+        "selector": ".item-title",
+        "htmlTag": "h4",
+        "description": "The main text of the prompt suggestion (the question itself). Should have this class."
+      },
+      {
+        "selector": ".item-subtitle",
+        "htmlTag": "p",
+        "description": "A short description of what the prompt does. Should have this class."
+      }
+    ],
+    "usageExample": {
+      "jsx": "<div class=\"prompt-suggestions-container\">\n  <h3 class=\"prompt-suggestions-title\">Prompt Suggestions</h3>\n  <div class=\"prompt-suggestions-grid\">\n    <div class=\"prompt-suggestion-item\">\n      <h4 class=\"item-title\">Investigate Growth Opportunities</h4>\n      <p class=\"item-subtitle\">Conduct a SWOT analysis based on the current workforce structure.</p>\n    </div>\n  </div>\n</div>"
+    }
   }
 ]

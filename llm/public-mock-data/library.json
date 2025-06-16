@@ -1,0 +1,366 @@
+{
+  "libraries": [
+    {
+      "library": {
+        "name": "Greenwood Community Library",
+        "location": "123 Maple Street, Greenwood, NY",
+        "books": [
+          {
+            "id": 1,
+            "title": "To Kill a Mockingbird",
+            "author": "Harper Lee",
+            "genre": "Fiction",
+            "publication_year": 1960,
+            "isbn": "978-0-06-112008-4",
+            "copies": 4,
+            "available_copies": 2,
+            "summary": "A classic novel about racial injustice in a small Southern town.",
+            "rating": 4.8,
+            "pages": 281,
+            "publisher": "J. B. Lippincott & Co.",
+            "language": "English"
+          },
+          {
+            "id": 2,
+            "title": "1984",
+            "author": "George Orwell",
+            "genre": "Dystopian",
+            "publication_year": 1949,
+            "isbn": "978-0-452-28423-4",
+            "copies": 3,
+            "available_copies": 0,
+            "summary": "A dystopian novel set in a totalitarian society under constant surveillance.",
+            "rating": 4.7,
+            "pages": 328,
+            "publisher": "Secker & Warburg",
+            "language": "English"
+          },
+          {
+            "id": 3,
+            "title": "The Great Gatsby",
+            "author": "F. Scott Fitzgerald",
+            "genre": "Classic",
+            "publication_year": 1925,
+            "isbn": "978-0-7432-7356-5",
+            "copies": 5,
+            "available_copies": 5,
+            "summary": "A story of wealth, love, and the American Dream in the Roaring Twenties.",
+            "rating": 4.5,
+            "pages": 180,
+            "publisher": "Charles Scribner's Sons",
+            "language": "English"
+          },
+          {
+            "id": 4,
+            "title": "Pride and Prejudice",
+            "author": "Jane Austen",
+            "genre": "Romance",
+            "publication_year": 1813,
+            "isbn": "978-1-85326-000-2",
+            "copies": 2,
+            "available_copies": 1,
+            "summary": "A romantic novel of manners, marriage, and social class in 19th-century England.",
+            "rating": 4.6,
+            "pages": 279,
+            "publisher": "T. Egerton, Whitehall",
+            "language": "English"
+          },
+          {
+            "id": 5,
+            "title": "The Hobbit",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "publication_year": 1937,
+            "isbn": "978-0-618-00221-3",
+            "copies": 6,
+            "available_copies": 4,
+            "summary": "The adventure of Bilbo Baggins, a hobbit who goes on an unexpected journey.",
+            "rating": 4.9,
+            "pages": 310,
+            "publisher": "George Allen & Unwin",
+            "language": "English"
+          },
+          {
+            "id": 6,
+            "title": "The Catcher in the Rye",
+            "author": "J.D. Salinger",
+            "genre": "Fiction",
+            "publication_year": 1951,
+            "isbn": "978-0-316-76948-0",
+            "copies": 3,
+            "available_copies": 1,
+            "summary": "A story about teenage angst and alienation.",
+            "rating": 4.2,
+            "pages": 224,
+            "publisher": "Little, Brown and Company",
+            "language": "English"
+          },
+          {
+            "id": 7,
+            "title": "Moby Dick",
+            "author": "Herman Melville",
+            "genre": "Adventure",
+            "publication_year": 1851,
+            "isbn": "978-1-5032-8078-6",
+            "copies": 2,
+            "available_copies": 2,
+            "summary": "The tale of Captain Ahab's obsessive quest to hunt a giant white whale.",
+            "rating": 4.0,
+            "pages": 635,
+            "publisher": "Richard Bentley",
+            "language": "English"
+          },
+          {
+            "id": 13,
+            "title": "The Alchemist",
+            "author": "Paulo Coelho",
+            "genre": "Fantasy",
+            "publication_year": 1988,
+            "isbn": "978-0-06-112241-5",
+            "copies": 5,
+            "available_copies": 3,
+            "summary": "A philosophical book about a shepherd boy who journeys to the Egyptian pyramids in search of treasure.",
+            "rating": 4.7,
+            "pages": 163,
+            "publisher": "HarperCollins",
+            "language": "Portuguese"
+          }
+        ]
+      }
+    },
+    {
+      "library": {
+        "name": "Oakridge Central Library",
+        "location": "456 Oak Avenue, Oakridge, CA",
+        "books": [
+          {
+            "id": 8,
+            "title": "Dune",
+            "author": "Frank Herbert",
+            "genre": "Science Fiction",
+            "publication_year": 1965,
+            "isbn": "978-0-441-01359-3",
+            "copies": 5,
+            "available_copies": 3,
+            "summary": "A sci-fi epic about politics, religion, and power on a desert planet.",
+            "rating": 4.9,
+            "pages": 412,
+            "publisher": "Chilton Books",
+            "language": "English"
+          },
+          {
+            "id": 9,
+            "title": "The Lord of the Rings",
+            "author": "J.R.R. Tolkien",
+            "genre": "Fantasy",
+            "publication_year": 1954,
+            "isbn": "978-0-618-64015-7",
+            "copies": 4,
+            "available_copies": 1,
+            "summary": "An epic high-fantasy novel about the quest to destroy the One Ring.",
+            "rating": 5.0,
+            "pages": 1178,
+            "publisher": "Allen & Unwin",
+            "language": "English"
+          },
+          {
+            "id": 10,
+            "title": "Foundation",
+            "author": "Isaac Asimov",
+            "genre": "Science Fiction",
+            "publication_year": 1951,
+            "isbn": "978-0-553-80371-8",
+            "copies": 3,
+            "available_copies": 3,
+            "summary": "A series about the fall of a galactic empire and the effort to preserve knowledge.",
+            "rating": 4.8,
+            "pages": 255,
+            "publisher": "Gnome Press",
+            "language": "English"
+          },
+          {
+            "id": 11,
+            "title": "Brave New World",
+            "author": "Aldous Huxley",
+            "genre": "Dystopian",
+            "publication_year": 1932,
+            "isbn": "978-0-06-085052-4",
+            "copies": 4,
+            "available_copies": 2,
+            "summary": "A dystopian novel exploring a future society driven by technology and conditioning.",
+            "rating": 4.6,
+            "pages": 311,
+            "publisher": "Chatto & Windus",
+            "language": "English"
+          },
+          {
+            "id": 12,
+            "title": "The Hitchhiker's Guide to the Galaxy",
+            "author": "Douglas Adams",
+            "genre": "Science Fiction",
+            "publication_year": 1979,
+            "isbn": "978-0-345-39180-3",
+            "copies": 7,
+            "available_copies": 6,
+            "summary": "A comedic science fiction series about an unwitting human's journey through space.",
+            "rating": 4.7,
+            "pages": 193,
+            "publisher": "Pan Books",
+            "language": "English"
+          },
+          {
+            "id": 14,
+            "title": "Neuromancer",
+            "author": "William Gibson",
+            "genre": "Science Fiction",
+            "publication_year": 1984,
+            "isbn": "978-0-441-56959-5",
+            "copies": 4,
+            "available_copies": 2,
+            "summary": "A seminal work of cyberpunk fiction.",
+            "rating": 4.6,
+            "pages": 271,
+            "publisher": "Ace Books",
+            "language": "English"
+          }
+        ]
+      }
+    },
+    {
+      "library": {
+        "name": "Pinecrest City Library",
+        "location": "789 Pine Street, Pinecrest, TX",
+        "books": [
+          {
+            "id": 15,
+            "title": "Sapiens: A Brief History of Humankind",
+            "author": "Yuval Noah Harari",
+            "genre": "Non-Fiction",
+            "publication_year": 2011,
+            "isbn": "978-0-06-231609-7",
+            "copies": 8,
+            "available_copies": 5,
+            "summary": "A historical overview of humankind from the Stone Age to the present.",
+            "rating": 4.8,
+            "pages": 443,
+            "publisher": "Dvir Publishing House",
+            "language": "Hebrew"
+          },
+          {
+            "id": 16,
+            "title": "Thinking, Fast and Slow",
+            "author": "Daniel Kahneman",
+            "genre": "Psychology",
+            "publication_year": 2011,
+            "isbn": "978-0-374-27563-1",
+            "copies": 6,
+            "available_copies": 6,
+            "summary": "Explores the two systems that drive the way we think.",
+            "rating": 4.7,
+            "pages": 499,
+            "publisher": "Farrar, Straus and Giroux",
+            "language": "English"
+          },
+          {
+            "id": 17,
+            "title": "The Power of Habit",
+            "author": "Charles Duhigg",
+            "genre": "Self-Help",
+            "publication_year": 2012,
+            "isbn": "978-1-4000-6928-6",
+            "copies": 10,
+            "available_copies": 8,
+            "summary": "An examination of the science of habit formation in our lives, companies, and societies.",
+            "rating": 4.6,
+            "pages": 371,
+            "publisher": "Random House",
+            "language": "English"
+          },
+          {
+            "id": 18,
+            "title": "Educated",
+            "author": "Tara Westover",
+            "genre": "Memoir",
+            "publication_year": 2018,
+            "isbn": "978-0-399-59050-4",
+            "copies": 7,
+            "available_copies": 4,
+            "summary": "A memoir about a young woman who, raised in a survivalist family, pursues education against all odds.",
+            "rating": 4.8,
+            "pages": 334,
+            "publisher": "Random House",
+            "language": "English"
+          }
+        ]
+      }
+    },
+    {
+      "library": {
+        "name": "Rivertown Public Library",
+        "location": "101 River Road, Rivertown, WA",
+        "books": [
+          {
+            "id": 19,
+            "title": "Harry Potter and the Sorcerer's Stone",
+            "author": "J.K. Rowling",
+            "genre": "Fantasy",
+            "publication_year": 1997,
+            "isbn": "978-0-590-35342-7",
+            "copies": 15,
+            "available_copies": 10,
+            "summary": "The first novel in the Harry Potter series.",
+            "rating": 4.9,
+            "pages": 309,
+            "publisher": "Bloomsbury",
+            "language": "English"
+          },
+          {
+            "id": 20,
+            "title": "The Name of the Wind",
+            "author": "Patrick Rothfuss",
+            "genre": "Fantasy",
+            "publication_year": 2007,
+            "isbn": "978-0-7564-0407-9",
+            "copies": 9,
+            "available_copies": 5,
+            "summary": "The first book in The Kingkiller Chronicle series.",
+            "rating": 4.9,
+            "pages": 662,
+            "publisher": "DAW Books",
+            "language": "English"
+          },
+          {
+            "id": 21,
+            "title": "Mistborn: The Final Empire",
+            "author": "Brandon Sanderson",
+            "genre": "Fantasy",
+            "publication_year": 2006,
+            "isbn": "978-0-7653-1178-8",
+            "copies": 12,
+            "available_copies": 9,
+            "summary": "A high-fantasy novel set in a world where ash falls from the sky and mists rule the night.",
+            "rating": 4.8,
+            "pages": 541,
+            "publisher": "Tor Books",
+            "language": "English"
+          },
+          {
+            "id": 22,
+            "title": "American Gods",
+            "author": "Neil Gaiman",
+            "genre": "Fantasy",
+            "publication_year": 2001,
+            "isbn": "978-0-380-97365-1",
+            "copies": 8,
+            "available_copies": 6,
+            "summary": "A story of a man who gets caught up in a war between the old gods and new gods.",
+            "rating": 4.7,
+            "pages": 465,
+            "publisher": "William Morrow",
+            "language": "English"
+          }
+        ]
+      }
+    }
+  ]
+}

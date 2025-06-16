@@ -1,7 +1,7 @@
 import { Loader, Plus, Send } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
-interface ChatProps {
+export interface ChatProps {
   prompt: string;
   setPrompt: (prompt: string) => void;
   dataset: File | null;
@@ -19,6 +19,7 @@ const Chat = ({
   isLoading,
 }: ChatProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -43,19 +44,25 @@ const Chat = ({
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-gray-800 rounded-lg shadow-md mt-4 p-4">
+    <div
+      className={`max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-md mt-4 p-4 border transition-all duration-300 ease-in-out ${
+        isFocused ? "border-gray-700" : "border-gray-800"
+      }`}
+    >
       <div className="flex items-center">
         <textarea
           placeholder="Ask anything"
-          className="flex-grow p-2 rounded-lg bg-gray-700 text-white focus:outline-none min-h-[40px] max-h-[200px] resize-none"
+          className="flex-grow py-2 rounded-lg text-white focus:outline-none min-h-[40px] max-h-[200px] resize-none"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={handleKeyDown}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           rows={2}
         />
       </div>
 
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex items-center justify-between">
         {!dataset ? (
           <>
             <input

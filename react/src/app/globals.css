@@ -2,7 +2,7 @@
 
 .custom-scroll {
   scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: var(--accent-primary) var(--bg-primary); /* For Firefox */
+  scrollbar-color: var(--accent-primary) transparent; /* For Firefox */
 }
 
 .custom-scroll::-webkit-scrollbar {
@@ -814,4 +814,36 @@ body {
 
 .btn-clear:hover {
   @apply bg-[var(--accent-dark)];
+}
+
+/* Prompt Suggestions Box */
+.prompt-suggestions-container {
+  @apply w-full p-6 rounded-lg bg-[var(--bg-secondary)] border border-[var(--bg-tertiary)] mt-8;
+}
+
+.prompt-suggestions-title {
+  @apply text-2xl font-bold mb-4 text-[var(--text-accent)];
+}
+
+.prompt-suggestions-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.prompt-suggestion-item {
+  @apply p-4 rounded-lg bg-[var(--bg-secondary)] cursor-pointer transition-all duration-200;
+  border: 1px solid var(--bg-tertiary);
+}
+
+.prompt-suggestion-item:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  @apply bg-[var(--bg-tertiary)];
+}
+
+.prompt-suggestion-item .item-title {
+  @apply text-[var(--text-light)] font-bold text-base;
+}
+
+.prompt-suggestion-item .item-subtitle {
+  @apply text-[var(--text-highlight)] text-sm mt-1;
 }

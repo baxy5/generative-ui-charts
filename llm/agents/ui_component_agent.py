@@ -44,6 +44,7 @@ class AgentState(TypedDict):
     component_descriptors: str
     component_schema: str
     component_type: str  # 'chart' or 'ui'
+    prompt_suggestions: str
     final_response: Optional[UiComponentResponseSchema]
 
 
@@ -158,6 +159,56 @@ class UiComponentAgent:
                     detail=f"Failed to choose UI component descriptor: {e}",
                 )
 
+        async def prompt_suggestion(state: AgentState):
+            messages = [
+                SystemMessage(
+                    f"""You are an expert UX and Data Analytics specialist focused on reducing user friction and improving data exploration efficiency.
+                    Your task is to generate contextual prompt suggestions that help users interact with their data more effectively. 
+                    These suggestions should serve as cognitive shortcuts that reduce mental effort and interaction costs while encouraging deeper data exploration.
+                    
+                    Consider these key aspects when generating suggestions:
+                    - The user's current context and question
+                    - Available data structure and relationships
+                    - Existing components and their capabilities
+                    - Common user workflows and exploration patterns
+                    
+                    Generate up to 4 prompt suggestions that:
+                    - Reduce cognitive load by offering clear starting points
+                    - Minimize interaction cost by providing ready-to-use prompts
+                    - Encourage engagement by suggesting valuable but non-obvious analyses
+                    - Improve task efficiency by guiding users toward optimal data exploration paths
+                    
+                    Each suggestion should be:
+                    - Clear and specific enough to be immediately actionable
+                    - Contextually relevant to the current data and user needs
+                    - Focused on delivering actionable insights
+                    - Aligned with data visualization best practices"""
+                ),
+                HumanMessage(
+                    f"""Give me at least 4 prompt suggestions based on these informations.
+                    
+                        Overall data: {state['provided_data']}
+                        
+                        User's question: {state['question']}
+                    
+                        Extracted data for the user's question: {state["extracted_data"]}
+                    
+                        Component type: {state["component_type"]}
+                    """
+                ),
+            ]
+
+            response = await self.client.ainvoke(messages)
+
+            try:
+                state["prompt_suggestions"] = response.content
+                return state
+            except Exception as e:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Failed to generate prompt suggestions: {e}",
+                )
+
         async def final_component_generation(
             state: AgentState,
         ) -> UiComponentResponseSchema:
@@ -182,6 +233,7 @@ class UiComponentAgent:
                          - The component must end with "export default [ComponentName]" statement
                          - Return clean, well-structured React code
                          - Include rechartComponents list with all Recharts components used
+                         - Include prompt suggestions component below the chart
 
                         CRITICAL UUID REQUIREMENT:
                          - The parent/root element of your component MUST have id="{state['uuid']}"
@@ -195,6 +247,20 @@ class UiComponentAgent:
                          - Use text colors: text-light, text-accent, text-highlight
                          - Apply proper spacing and padding
                          - Ensure the parent container takes full available width
+                         - Add prompt suggestions in a row using "flex-container-row" class
+                         - Each prompt suggestion should use "prompt-suggestion-item" class
+                         - Include "prompt-suggestions-container" for the suggestions section
+                         - Add "prompt-suggestions-title" for the section header
+
+                        PROMPT SUGGESTIONS GUIDELINES:
+                         - Display prompt suggestions below the main chart component.
+                         - Wrap all suggestions in a container with the "prompt-suggestions-container" class.
+                         - The container should have a title with the "prompt-suggestions-title" class.
+                         - The suggestions themselves should be in a grid using "prompt-suggestions-grid".
+                         - Each suggestion must be a div with the "prompt-suggestion-item" class.
+                         - Inside each item, use an <h4> tag with class "item-title" for the main prompt question.
+                         - Below the title, use a <p> tag with class "item-subtitle" for the description.
+                         - The AI-generated state['prompt_suggestions'] will be a string containing several suggestions. You need to parse this string and create a separate component for each suggestion.
 
                         Provide your response as:
                          - name: The name of your component (PascalCase)
@@ -209,6 +275,7 @@ class UiComponentAgent:
                         
                         User question: {state['question']}
                         Extracted data: {state['extracted_data']}
+                        Prompt suggestions: {state['prompt_suggestions']}
                         """
                     ),
                 ]
@@ -225,6 +292,7 @@ class UiComponentAgent:
                          - DO NOT use any external dependencies
                          - All functionality must be self-contained within the component
                          - Use React hooks (useState, useEffect, useMemo) for interactivity
+                         - Include prompt suggestions component below the main component
 
                         CRITICAL UUID REQUIREMENT:
                          - The parent/root element of your component MUST have id="{state['uuid']}"
@@ -265,6 +333,20 @@ class UiComponentAgent:
                          - Wrap your main content in "component-container" for consistent styling
                          - Use "container-spacing-normal" for standard spacing, "container-spacing-tight" for compact layouts
                          - Available container classes include: flex-container-*, grid-container-*, component-container, dashboard-container
+                         - Add prompt suggestions in a row using "flex-container-row" class
+                         - Each prompt suggestion should use "prompt-suggestion-item" class
+                         - Include "prompt-suggestions-container" for the suggestions section
+                         - Add "prompt-suggestions-title" for the section header
+
+                        PROMPT SUGGESTIONS GUIDELINES:
+                         - Display prompt suggestions below the main component.
+                         - Wrap all suggestions in a container with the "prompt-suggestions-container" class.
+                         - The container should have a title with the "prompt-suggestions-title" class.
+                         - The suggestions themselves should be in a grid using "prompt-suggestions-grid".
+                         - Each suggestion must be a div with the "prompt-suggestion-item" class.
+                         - Inside each item, use an <h4> tag with class "item-title" for the main prompt question.
+                         - Below the title, use a <p> tag with class "item-subtitle" for the description.
+                         - The AI-generated state['prompt_suggestions'] will be a string containing several suggestions. You need to parse this string and create a separate component for each suggestion.
 
                         STYLING GUIDELINES:
                          - Use the existing CSS custom classes and variables from globals.css
@@ -292,6 +374,8 @@ class UiComponentAgent:
                         UI component descriptor schema: {state['component_schema']}
                         
                         Provided data: {state['extracted_data']}
+                        
+                        Prompt suggestions: {state['prompt_suggestions']}
                         """
                     ),
                 ]
@@ -311,6 +395,7 @@ class UiComponentAgent:
         graph.add_node("extract_data", extract_data)
         graph.add_node("determine_component_type", determine_component_type)
         graph.add_node("component_descriptor", component_descriptor)
+        graph.add_node("prompt_suggestion", prompt_suggestion)
         graph.add_node("final_component_generation", final_component_generation)
 
         # Define edges between nodes
@@ -320,7 +405,7 @@ class UiComponentAgent:
         # Conditional routing based on component type
         def should_use_descriptor(state: AgentState) -> str:
             if state["component_type"] == "chart":
-                return "final_component_generation"
+                return "prompt_suggestion"
             else:
                 return "component_descriptor"
 
@@ -329,11 +414,12 @@ class UiComponentAgent:
             should_use_descriptor,
             {
                 "component_descriptor": "component_descriptor",
-                "final_component_generation": "final_component_generation",
+                "prompt_suggestion": "prompt_suggestion",
             },
         )
 
-        graph.add_edge("component_descriptor", "final_component_generation")
+        graph.add_edge("component_descriptor", "prompt_suggestion")
+        graph.add_edge("prompt_suggestion", "final_component_generation")
         graph.add_edge("final_component_generation", END)
 
         return graph.compile(checkpointer=self.checkpoint_saver)

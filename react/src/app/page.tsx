@@ -4,16 +4,16 @@ import {
   fetchComponentData,
   transformAndRenderComponent,
 } from "../utils/transformComponent";
-import Chat from "@/components/Chat";
-import SystemMessage from "@/components/SystemMessage";
 import Artifact from "@/components/Artifact";
 import { toBase64 } from "@/utils/common";
+import ChatContainer from "@/components/ChatContainer";
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>("");
   const [dataset, setDataset] = useState<File | null>(null);
+  const [initialStructure, setInitialStructure] = useState<boolean>(true);
 
   const handleSubmit = async () => {
     if (!prompt.trim() || !dataset) {
@@ -49,6 +49,7 @@ export default function Home() {
     try {
       setError(null);
       setIsLoading(true);
+      setInitialStructure(false);
       const data = await fetchComponentData(
         "http://localhost:8000/ui_component/generate",
         currentPrompt,
@@ -92,19 +93,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col p-6">
-      <Artifact />
-      <div>
-        <SystemMessage message={error} setMessage={setError} />
-        <Chat
-          prompt={prompt}
-          setPrompt={setPrompt}
-          dataset={dataset}
-          setDataset={setDataset}
-          handleSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
-      </div>
+    <div
+      className={`min-h-screen bg-gray-900 p-6
+    ${
+      initialStructure ? "flex justify-center items-center" : "grid grid-rows-6"
+    }`}
+    >
+      {!initialStructure && <Artifact />}
+      <ChatContainer
+        prompt={prompt}
+        setPrompt={setPrompt}
+        dataset={dataset}
+        setDataset={setDataset}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+        message={error}
+        setMessage={setError}
+      />
     </div>
   );
 }
