@@ -30,6 +30,8 @@ class UiComponentRequestSchema(BaseModel):
     """Schema for UI component request."""
 
     prompt: str
+    dataset: str
+    dataset_name: str
 
 
 class AgentState(TypedDict):
@@ -297,7 +299,7 @@ class UiComponentAgent:
             response = await structured_output_model.ainvoke(messages)
 
             try:
-                response.id = state['uuid']
+                response.id = state["uuid"]
                 state["final_response"] = response
                 return state
             except Exception as e:
