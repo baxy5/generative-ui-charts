@@ -1,0 +1,9 @@
+<main class="main">
+  <button (click)="handleClick()">Replace with innerHTML</button>
+  <button (click)="handleClickR()">Using Renderer2</button>
+  <button (click)="handleDynamicLoad()">Dynamic load</button>
+  <app-artifact-container
+    [data]="dynamicComponentData"
+  ></app-artifact-container>
+  <app-iframe-loader> </app-iframe-loader>
+</main>

@@ -1,0 +1,54 @@
+<style>
+  .metrics-container {
+    padding: 8px;
+    border-radius: 12px;
+    background-color: rgb(83, 83, 175);
+    border: 2px solid rgb(34, 34, 71);
+    color: white;
+    width: fit-content;
+    text-align: center;
+  }
+
+  .metrics-container h1 {
+    font-size: 44px;
+  }
+
+  .metrics-revenue {
+    font-size: 32px;
+  }
+
+  .metrics-market {
+    font-size: 20px;
+  }
+
+  .metrics-metric-percent {
+    color: red;
+  }
+</style>
+
+<div id="artifact">
+  <p>artifact-container works!</p>
+
+  <div *ngIf="data()" class="dynamic-container">
+    <div [ngSwitch]="data()?.type">
+      <div
+        *ngSwitchCase="'metrics'"
+        class="metrics-container"
+        [ngStyle]="data()?.styles"
+      >
+        <h1>{{ data()?.title }}</h1>
+        <p class="metrics-revenue">Revenue: {{ data()?.data.revenue }}</p>
+        <p class="metrics-market">
+          Market cap:
+          <span class="metrics-metric-percent">{{
+            data()?.data.marketCap
+          }}</span>
+        </p>
+      </div>
+
+      <div *ngSwitchCase="'chart'"></div>
+
+      <div *ngSwitchCase="'table'"></div>
+    </div>
+  </div>
+</div>
