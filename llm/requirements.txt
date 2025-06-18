@@ -7,5 +7,7 @@ langgraph
 fastapi[standard]
 pydantic
 uvicorn[standard]
+boto3
+botocore
 
 dotenv

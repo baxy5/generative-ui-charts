@@ -12,10 +12,11 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
         Load Generated Component
       </button>
       <button (click)="clearComponent()">Clear</button>
+      <a [href]="iframeTestUrl" target="_blank"> <button>Open app</button></a>
 
       <iframe
-        *ngIf="currentUrl"
-        [src]="currentUrl"
+        *ngIf="iframeTestUrl"
+        [src]="iframeTestUrl"
         title="Generated Component"
         sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms"
         width="100%"
@@ -46,7 +47,13 @@ export class IframeLoaderComponent {
   currentUrl: SafeResourceUrl | null = null;
   iframeHeight = 600;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  iframeTestUrl: SafeResourceUrl;
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.iframeTestUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      'https://pub-b348006f0b2142f7a105983d74576412.r2.dev/e25523448e7c/index.html'
+    );
+  }
 
   async loadGeneratedComponent() {
     // 1. Call backend agent to generate component
