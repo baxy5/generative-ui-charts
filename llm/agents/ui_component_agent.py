@@ -11,6 +11,8 @@ from langchain_core.runnables.config import RunnableConfig
 from core.common import get_gpt_client
 import uuid
 
+checkpoint_saver = InMemorySaver()
+
 
 class UiComponentResponseSchema(BaseModel):
     """Schema for UI component response."""
@@ -46,6 +48,9 @@ class AgentState(TypedDict):
     component_type: str  # 'chart' or 'ui'
     prompt_suggestions: str
     final_response: Optional[UiComponentResponseSchema]
+    # Conversation memory fields
+    conversation_history: list[dict]
+    previous_components: list[dict]
 
 
 class UiComponentAgent:
@@ -53,8 +58,24 @@ class UiComponentAgent:
 
     def __init__(self, client: Annotated[ChatOpenAI, Depends(get_gpt_client)]):
         self.client = client
-        self.checkpoint_saver = InMemorySaver()
+        self.checkpoint_saver = checkpoint_saver
         self.graph = self._build_graph()
+
+    def _build_context_prompt(self, state: AgentState) -> str:
+        """Helper method to build context prompt from conversation history."""
+        context_prompt = ""
+
+        if state.get("conversation_history") and len(state["conversation_history"]) > 1:
+            context_prompt = "\n\nConversation History:\n"
+            for i, entry in enumerate(state["conversation_history"][:-1]):
+                context_prompt += f"{i+1}. Previous question: {entry['question']}\n"
+
+            if state.get("previous_components"):
+                context_prompt += "\nPreviously generated components:\n"
+                for i, comp in enumerate(state["previous_components"]):
+                    context_prompt += f"""{i+1}. {comp["component_name"]} {comp['component_code']} {comp['rechartComponents']} (for: {comp['question']})\n"""
+
+        return context_prompt
 
     def _build_graph(self):
         """Build the graph workflow for generating components."""
@@ -64,12 +85,18 @@ class UiComponentAgent:
 
         async def extract_data(state: AgentState):
             """Extract data for the user's question."""
+
+            context_prompt = self._build_context_prompt(state)
+
             messages = [
                 SystemMessage(
                     f"""
             You are a specialized AI assistant. Your task is to answer to the user's question
             carefully from the provided dataset. Extract all the information that answers the question.
             Provide clear rationale for you choice, and return only the relevant information for the question.
+            
+            Conversation history:
+            {context_prompt}
             """
                 ),
                 HumanMessage(
@@ -92,9 +119,12 @@ class UiComponentAgent:
 
         async def determine_component_type(state: AgentState):
             """Determine if the user wants a chart/graph or a regular UI component."""
+
+            context_prompt = self._build_context_prompt(state)
+
             messages = [
                 SystemMessage(
-                    """You are a specialized UI/UX analyst. Your task is to determine whether the user's question 
+                    f"""You are a specialized UI/UX analyst. Your task is to determine whether the user's question 
                     requires a chart/graph visualization or a regular UI component.
                     
                     Respond with ONLY one word:
@@ -103,6 +133,9 @@ class UiComponentAgent:
                     
                     Chart keywords: chart, graph, plot, visualization, trend, analytics, statistics, metrics over time, 
                     line chart, bar chart, pie chart, scatter plot, histogram, etc.
+                    
+                    Conversation history:
+                    {context_prompt}
                     """
                 ),
                 HumanMessage(
@@ -130,11 +163,17 @@ class UiComponentAgent:
 
         async def component_descriptor(state: AgentState):
             """Choose a UI component descriptor for the extracted data."""
+
+            context_prompt = self._build_context_prompt(state)
+
             messages = [
                 SystemMessage(
                     f"""You are a specialized dashboard designer.
                         Your task is to choose a UI component descriptor from the provided
                         components which can be used with the extracted data.
+                        
+                        Conversation history:
+                        {context_prompt}
                         """
                 ),
                 HumanMessage(
@@ -160,6 +199,9 @@ class UiComponentAgent:
                 )
 
         async def prompt_suggestion(state: AgentState):
+
+            context_prompt = self._build_context_prompt(state)
+
             messages = [
                 SystemMessage(
                     f"""You are an expert UX and Data Analytics specialist focused on reducing user friction and improving data exploration efficiency.
@@ -182,7 +224,11 @@ class UiComponentAgent:
                     - Clear and specific enough to be immediately actionable
                     - Contextually relevant to the current data and user needs
                     - Focused on delivering actionable insights
-                    - Aligned with data visualization best practices"""
+                    - Aligned with data visualization best practices
+                    
+                    Conversation history:
+                    {context_prompt}
+                    """
                 ),
                 HumanMessage(
                     f"""Give me at least 4 prompt suggestions based on these informations.
@@ -216,6 +262,8 @@ class UiComponentAgent:
             structured_output_model = self.client.with_structured_output(
                 UiComponentResponseSchema
             )
+
+            context_prompt = self._build_context_prompt(state)
 
             if state["component_type"] == "chart":
                 # Generate Rechart component
@@ -266,6 +314,9 @@ class UiComponentAgent:
                          - name: The name of your component (PascalCase)
                          - component: The complete React component code with imports and exports
                          - rechartComponents: List of Recharts components used (e.g., ["LineChart", "XAxis", "YAxis", "CartesianGrid", "Tooltip", "Legend", "Line", "ResponsiveContainer"])
+                        
+                        Conversation history:
+                        {context_prompt}
                         """
                     ),
                     HumanMessage(
@@ -364,6 +415,10 @@ class UiComponentAgent:
                          Provide your response as:
                           - name: The name of your component (PascalCase)
                           - component: The complete React component code with imports and exports
+                          
+                          
+                        Conversation history:
+                        {context_prompt}
                         """
                     ),
                     HumanMessage(
@@ -385,6 +440,16 @@ class UiComponentAgent:
             try:
                 response.id = state["uuid"]
                 state["final_response"] = response
+
+                state["previous_components"].append(
+                    {
+                        "question": state["question"],
+                        "component_name": response.name,
+                        "component_code": response.component,
+                        "rechartComponents": response.rechartComponents,
+                    }
+                )
+
                 return state
             except Exception as e:
                 raise HTTPException(
@@ -429,13 +494,51 @@ class UiComponentAgent:
     ) -> UiComponentResponseSchema:
         """Generate UI component based on the user's question and the data."""
 
+        config = RunnableConfig(configurable={"thread_id": "1"})
+
+        # Try to retrieve previous state from checkpointer
+        previous_state: AgentState = None
+        try:
+            checkpoints = []
+            for checkpoint in self.checkpoint_saver.list(config):
+                checkpoints.append(checkpoint)
+
+            if checkpoints:
+                latest_checkpoint = max(
+                    checkpoints, key=lambda x: x.metadata.get("step", 0)
+                )
+                previous_state = latest_checkpoint.checkpoint["channel_values"]
+
+        except Exception as e:
+            previous_state = None
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to retrieve previous state from checkpointer: {e}",
+            )
+
+        # Initial conversation history
+        conversation_history = []
+        previous_components = []
+
+        if previous_state:
+            conversation_history = previous_state.get("conversation_history", [])
+            previous_components = previous_state.get("previous_components", [])
+            conversation_history.append(
+                {"question": question, "timestamp": str(uuid.uuid4())}
+            )
+        else:
+            conversation_history = [
+                {"question": question, "timestamp": str(uuid.uuid4())}
+            ]
+
         initial_state: AgentState = {
             "uuid": f"comp_{str(uuid.uuid4()).replace('-', '')[:12]}",
             "question": question,
             "provided_data": data,
             "component_descriptors": component_descriptors or "{}",
+            "conversation_history": conversation_history,
+            "previous_components": previous_components,
         }
-        config = RunnableConfig(configurable={"thread_id": "1"})
 
         result = await self.graph.ainvoke(initial_state, config=config)
 
