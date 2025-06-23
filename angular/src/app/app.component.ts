@@ -1,7 +1,8 @@
 import { Component, Renderer2 } from '@angular/core';
 import { ArtifactContainerComponent } from '../components/artifact-container/artifact-container.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { IframeLoaderComponent } from "../components/iframe-loader/iframe-loader.component";
+import { IframeLoaderComponent } from '../components/iframe-loader/iframe-loader.component';
+import { RouterOutlet } from '@angular/router';
 
 interface ComponentData {
   type: 'metrics' | 'chart' | 'table';
@@ -14,7 +15,7 @@ interface ComponentData {
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  imports: [ArtifactContainerComponent, IframeLoaderComponent],
+  imports: [ArtifactContainerComponent, IframeLoaderComponent, RouterOutlet],
 })
 export class AppComponent {
   constructor(private renderer: Renderer2, private sanitizer: DomSanitizer) {}
