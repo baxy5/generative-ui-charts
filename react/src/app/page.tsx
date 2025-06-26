@@ -7,6 +7,7 @@ import {
 import Artifact from "@/components/Artifact";
 import { toBase64 } from "@/utils/common";
 import ChatContainer from "@/components/ChatContainer";
+import Link from "next/link";
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
@@ -99,6 +100,16 @@ export default function Home() {
       initialStructure ? "flex justify-center items-center" : "grid grid-rows-6"
     }`}
     >
+      <div className="absolute top-0">
+        <ul>
+          <Link href="/design-system">
+            <li>design system</li>
+          </Link>
+          <Link href="/iframe">
+            <li>iframe test</li>
+          </Link>
+        </ul>
+      </div>
       {!initialStructure && <Artifact />}
       <ChatContainer
         prompt={prompt}
