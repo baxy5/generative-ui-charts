@@ -4,6 +4,7 @@ from api.endpoints import rechart
 from api.endpoints import component
 from api.endpoints import ui_component
 from api.endpoints import iframe_component
+from api.endpoints import dashboard
 
 app = FastAPI()
 
@@ -21,3 +22,4 @@ app.include_router(rechart.router, prefix="/rechart", tags=["Chart Generation"])
 app.include_router(component.router, prefix="/component", tags=["Component Generation"])
 app.include_router(ui_component.router, prefix="/ui_component", tags=["UI Component"])
 app.include_router(iframe_component.router, prefix="/iframe", tags=["UI Component"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])

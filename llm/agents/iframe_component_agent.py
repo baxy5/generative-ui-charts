@@ -209,7 +209,11 @@ class IframeComponentAgent:
         return graph.compile(checkpointer=self.checkpoint_saver)
 
     async def generate_iframe_components(
-        self, question: str, data: str, ui_descriptor: str, css: str
+        self,
+        question: str,
+        data: str,
+        ui_descriptor: str,
+        css: str,
     ) -> AgentResponseSchema:
         """Generate page_title, HTML, CSS and JS code."""
 
