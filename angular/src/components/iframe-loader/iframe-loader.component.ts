@@ -51,7 +51,7 @@ export class IframeLoaderComponent {
 
   constructor(private sanitizer: DomSanitizer) {
     this.iframeTestUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      'https://pub-b348006f0b2142f7a105983d74576412.r2.dev/e25523448e7c/index.html'
+      'https://pub-b348006f0b2142f7a105983d74576412.r2.dev/4c8dd9016315/index.html'
     );
   }
 
