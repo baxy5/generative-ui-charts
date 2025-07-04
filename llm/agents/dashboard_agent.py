@@ -6,56 +6,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.common import get_gpt_client
-
-
-class LayoutOptionSchema(BaseModel):
-    """Schema for individual layout option."""
-
-    layout_id: str = Field(description="Unique identifier for this layout option")
-    layout_name: str = Field(description="Human-readable name for the layout")
-    description: str = Field(description="Brief description of the layout approach")
-    page_title: str = Field(default=None, description="Title of the page.")
-    html: str = Field(default=None, description="HTML code.")
-    css: str = Field(default=None, description="CSS code.")
-    js: str = Field(default=None, description="Javascript code.")
-
-
-class LayoutGenerationResponseSchema(BaseModel):
-    """Schema for layout generation phase response."""
-
-    layouts: List[LayoutOptionSchema] = Field(description="List of 3 layout options")
-
-
-class DashboardRequestSchema(BaseModel):
-    """API endpoint request schema."""
-
-    question: str
-    phase: str = Field(
-        default="generate_layouts",
-        description="Either 'generate_layouts' or 'finalize_dashboard'",
-    )
-    selected_layout_id: Optional[str] = Field(
-        default=None, description="Required for finalize phase"
-    )
-
-
-class DashboardResponseSchema(BaseModel):
-    """API endpoint response structure."""
-
-    url: List[str]
-    layouts: Optional[List[LayoutOptionSchema]] = None
-
-
-class AgentState(TypedDict):
-    """State of the agent's workflow."""
-
-    question: str
-    data: str
-    ui_descriptor: str
-    css_descriptor: str
-    phase: str
-    selected_layout_id: Optional[str]
-    result: LayoutGenerationResponseSchema
+from schemas.dashboard_schema import AgentState, Layout, LayoutNode
 
 
 class DashboardAgent:
@@ -69,36 +20,42 @@ class DashboardAgent:
     def _build_graph(self):
         graph = StateGraph(AgentState)
 
-        async def generate_layouts(state: AgentState) -> AgentState:
+        async def generate_layouts(state: AgentState):
             """Generate three layouts from the data."""
-            structured_model = self.client.with_structured_output(
-                LayoutGenerationResponseSchema
-            )
+            structured_model = self.client.with_structured_output(LayoutNode)
             messages = [
                 SystemMessage(
-                    """You are a UI layout expert. Generate 3 distinct layout approaches for the provided data and user request. Focus on:
+                    """You are a UI layout designer expert. Generate 3 distinct layout approaches for the provided data and user request. Focus on:
 
                         1. **Layout Structure**: Different ways to organize the information
                         2. **Visualization Approach**: Different chart types, table vs cards, etc.
                         3. **User Experience**: Different interaction patterns
 
                         For each layout, provide:
-                        - A unique layout_id
-                        - A descriptive name and description
-                        - Simplified HTML structure for preview (no complex styling)
-                        - Basic CSS for thumbnail preview
+                        - A unique layout_id, with this format: layout-[number]
+                        - A descriptive page_title about the content of the dashboard
+                        - Simplified HTML structure with distinct layout approaches, build different flexbox or grid for each layout 
+                        - Basic CSS for the components, use white as the background of the components and grey for the borders. The borders must have 12px border radius. The dashboard layout must be middle centered and responsive.
 
-                        Make each layout distinctly different in approach - not just styling variations."""
+                        Important: Watch out for these specifically — do NOT skip them.
+                        - Use every information in the provided data.
+                        - Use flexbox, grid or both.
+                        - Do not create navigation components within the page.
+                        - Watch out for the layout_id format.
+                        - Page title should be describe the content of the page. No technicalities.
+                        - The data and informations must be hardcoded into the html elements.
+
+                        Make each layout distinctly different in approach."""
                 ),
                 HumanMessage(
                     f"""Generate 3 different layout options for:
 
-                        **USER REQUEST:** {state['question']}
+                        **USER REQUEST:** {state['query']}
                         **DATA:** {state['data']}
 
                         Create layouts that differ in:
                         1. Information hierarchy (what's emphasized)
-                        2. Visualization method (charts vs tables vs cards)
+                        2. Visualization method with flexbox, grid or both. (charts,tables,cards,buttons, kpi boxes, hero section, accordions, alerts, box groups, lists, dropdowns, timelines, paragraphs, texts, numbers, decreasing and increasing numbers)
                         3. User interaction patterns (drilling down vs filtering vs overview)
                         
                         Keep the HTML simple - focus on structure, not final styling."""
@@ -107,39 +64,31 @@ class DashboardAgent:
 
             response = await structured_model.ainvoke(messages)
 
-            state["result"] = response
+            state["layouts"] = response.layouts
             return state
 
         async def finalize_dashboard(
             state: AgentState,
         ) -> AgentState:
             """Finalize user decided dashboard layout."""
-            structured_model = self.client.with_structured_output(
-                LayoutGenerationResponseSchema
-            )
+            structured_model = self.client.with_structured_output(Layout)
 
             messages = [
                 SystemMessage(
-                    """You are an expert web developer specializing in creating data-driven UI components that will be embedded in iframes. Your task is to generate a complete, self-contained web component with HTML, CSS, and JavaScript based on the provided data structure, UI component descriptors, and CSS styling guidelines.
+                    """You are an expert web developer specializing in creating data-driven UI components and dashboards. Your task is to generate a complete, self-contained web components with HTML, CSS, and JavaScript based on the provided UI component descriptors, and CSS styling guidelines.
 
                         ## PRIMARY OBJECTIVE:
-                        Transform the provided data into an interactive, visually appealing UI component that follows the specified design patterns and styling requirements.
+                        Transform the provided layout into an interactive, visually appealing UI component that follows the specified design patterns and styling requirements.
 
                         ## INPUT PROCESSING STRATEGY:
 
-                        ### 1. DATA ANALYSIS:
-                        - Parse and understand the structure of the provided data
-                        - Identify data types (metrics, time series, categories, hierarchical, etc.)
-                        - Determine the most appropriate visualization method for each data element
-                        - Extract key insights and patterns that should be highlighted
-
-                        ### 2. UI DESCRIPTOR INTEGRATION:
+                        ### 1. UI DESCRIPTOR INTEGRATION:
                         - Use the UI descriptor as the primary guide for component structure and behavior
                         - Follow any specified layout patterns, interaction models, or component types
                         - Implement the recommended user experience patterns
                         - Adapt the descriptor guidelines to fit the actual data structure
 
-                        ### 3. CSS DESCRIPTOR UTILIZATION:
+                        ### 2. CSS DESCRIPTOR UTILIZATION:
                         - Apply the provided CSS styles as the foundation for the component's appearance
                         - Ensure generated HTML structure is compatible with the provided CSS classes and selectors
                         - Extend the provided styles with additional CSS as needed for data visualization
@@ -188,24 +137,28 @@ class DashboardAgent:
                         - Include comprehensive data validation and sanitization
 
                         ## OUTPUT FORMAT:
-                        Return a single layout with the complete HTML, CSS, and JavaScript implementation."""
+                        Return a single layout with the complete page_title, HTML, CSS, and JavaScript implementation."""
                 ),
                 HumanMessage(
-                    f"""Create the final dashboard component using the selected layout:
+                    f"""Create the final dashboard using the selected layout:
 
-                        **USER REQUEST:** {state['question']}
-                        **DATA:** {state['data']}
-                        **SELECTED LAYOUT ID:** {state['selected_layout_id']}
+                        **SELECTED LAYOUT:** {state['selected_layout']}
                         **UI DESCRIPTORS:** {state['ui_descriptor']}
-                        **CSS DESCRIPTORS:** {state['css_descriptor']}
+                        **CSS Styles:** {state['design_system']}
 
-                        Generate a single, complete dashboard component based on the selected layout."""
+                        Generate a single, complete dashboard based on the selected layout.
+                        
+                        Important:
+                        - Use the CSS for styling.
+                        - Use the same flexbox/grid structure of the selected layout.
+                        - Hardcode the informations in the HTML.
+                        """
                 ),
             ]
 
             response = await structured_model.ainvoke(messages)
 
-            state["result"] = response
+            state["final"] = response
             return state
 
         def route_phase_node(state: AgentState) -> AgentState:
@@ -214,10 +167,10 @@ class DashboardAgent:
 
         def route_phase_condition(state: AgentState) -> str:
             # This function determines which path to take
-            if state["phase"] == "generate_layouts":
-                return "generate_layouts"
+            if state["phase"] == "layout":
+                return "layout"
             else:
-                return "finalize_dashboard"
+                return "final"
 
         graph.add_node("route_phase", route_phase_node)
         graph.add_node("generate_layouts", generate_layouts)
@@ -228,8 +181,8 @@ class DashboardAgent:
             "route_phase",
             route_phase_condition,
             {
-                "generate_layouts": "generate_layouts",
-                "finalize_dashboard": "finalize_dashboard",
+                "layout": "generate_layouts",
+                "final": "finalize_dashboard",
             },
         )
 
