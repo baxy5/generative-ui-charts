@@ -10,7 +10,7 @@ from schemas.dashboard_schema import AgentState, Layout, LayoutNode
 
 
 class DashboardAgent:
-    """Agent for generating dashboard layouts."""
+    """Agent for generating dashboard layouts using data-driven information architecture."""
 
     def __init__(self, client: Annotated[ChatOpenAI, Depends(get_gpt_client)]) -> None:
         self.client = client
@@ -21,44 +21,82 @@ class DashboardAgent:
         graph = StateGraph(AgentState)
 
         async def generate_layouts(state: AgentState):
-            """Generate three layouts from the data."""
+            """Generate three layouts using data-driven information architecture approach."""
             structured_model = self.client.with_structured_output(LayoutNode)
             messages = [
                 SystemMessage(
-                    """You are a UI layout designer expert. Generate 3 distinct layout approaches for the provided data and user request. Focus on:
+                    """You are a senior data analyst and UI architect specializing in comprehensive dashboard design. Your approach is DATA-DRIVEN INFORMATION ARCHITECTURE.
 
-                        1. **Layout Structure**: Different ways to organize the information
-                        2. **Visualization Approach**: Different chart types, table vs cards, etc.
-                        3. **User Experience**: Different interaction patterns
+                    ## CORE METHODOLOGY: COMPREHENSIVE DATA ANALYSIS
 
-                        For each layout, provide:
-                        - A unique layout_id, with this format: layout-[number]
-                        - A descriptive page_title about the content of the dashboard
-                        - Simplified HTML structure with distinct layout approaches, build different flexbox or grid for each layout 
-                        - Basic CSS for the components, use white as the background of the components and grey for the borders. The borders must have 12px border radius. The dashboard layout must be middle centered and responsive.
+                    ### STEP 1: COMPLETE DATA INVENTORY
+                    - Analyze EVERY piece of data provided - numbers, percentages, categories, time series, hierarchies
+                    - Identify data types: KPIs, trends, comparisons, distributions, relationships, historical patterns
+                    - Map data relationships and dependencies
+                    - Calculate derivative insights (growth rates, ratios, percentages, trends)
+                    - Categorize data by business importance and user decision-making impact
 
-                        Important: Watch out for these specifically — do NOT skip them.
-                        - Use every information in the provided data.
-                        - Use flexbox, grid or both.
-                        - Do not create navigation components within the page.
-                        - Watch out for the layout_id format.
-                        - Page title should be describe the content of the page. No technicalities.
-                        - The data and informations must be hardcoded into the html elements.
+                    ### STEP 2: INFORMATION HIERARCHY DESIGN
+                    - **PRIMARY LEVEL**: Most critical business metrics that drive decisions (revenue, growth, performance)
+                    - **SECONDARY LEVEL**: Supporting metrics that provide context (costs, margins, efficiency)
+                    - **TERTIARY LEVEL**: Detailed breakdowns and granular data (departments, subcategories, trends)
+                    - **CONTEXTUAL LEVEL**: Comparative and historical data for benchmarking
 
-                        Make each layout distinctly different in approach."""
+                    ### STEP 3: SYSTEMATIC COMPONENT SELECTION
+                    **For each data element, choose the optimal component based on data characteristics:**
+                    
+                    **KPI BOXES**: Single critical metrics (revenue, profit, growth %, key ratios)
+                    **HERO CARDS**: Important metrics with context (revenue with growth trend, customer count with retention)
+                    **COMPARISON CARDS**: Side-by-side metrics (this year vs last year, plan vs actual)
+                    **DATA TABLES**: Detailed breakdowns with multiple attributes (product performance, regional data, time series)
+                    **CHART CONTAINERS**: Trend data, distributions, comparisons requiring visualization
+                    **GROUPED SECTIONS**: Related metrics organized by business function or category
+
+                    ### STEP 4: LAYOUT STRATEGY
+                    - **TOP SECTION**: Hero KPIs and primary metrics in a prominent stats grid
+                    - **MIDDLE SECTION**: Secondary metrics organized by business function/category
+                    - **BOTTOM SECTION**: Detailed data tables and granular breakdowns
+                    - **RESPONSIVE GRID**: Use CSS Grid for consistent alignment and responsive behavior
+                    - **LOGICAL GROUPING**: Group related information using flexbox containers
+
+                    ### REQUIREMENTS:
+                    - **MANDATORY**: Use ALL data provided - create visualizations for every metric
+                    - **MANDATORY**: Apply consistent information hierarchy principles
+                    - **MANDATORY**: Use proper CSS Grid and Flexbox for layout organization
+                    - **MANDATORY**: Create exactly 3 distinct layout approaches with format: layout-[1|2|3]
+                    - **MANDATORY**: Provide descriptive page titles that reflect the data content
+                    - **MANDATORY**: Hardcode all data values directly into HTML elements
+                    - **MANDATORY**: Use white backgrounds with grey borders (12px border radius)
+                    - **MANDATORY**: Create responsive, center-aligned layouts
+
+                    ### LAYOUT DIFFERENTIATION:
+                    **Layout 1**: Executive Summary (Primary metrics prominent, supporting data organized)
+                    **Layout 2**: Operational Dashboard (Functional grouping, balanced metric distribution)
+                    **Layout 3**: Analytical Deep-dive (Comprehensive data with detailed breakdowns)
+
+                    Generate 3 distinct layouts, each showcasing different information architecture approaches while using ALL available data."""
                 ),
                 HumanMessage(
-                    f"""Generate 3 different layout options for:
+                    f"""Apply DATA-DRIVEN INFORMATION ARCHITECTURE to create 3 comprehensive dashboard layouts:
 
-                        **USER REQUEST:** {state['query']}
-                        **DATA:** {state['data']}
+                    **USER REQUEST:** {state['query']}
+                    **COMPREHENSIVE DATASET:** {state['data']}
 
-                        Create layouts that differ in:
-                        1. Information hierarchy (what's emphasized)
-                        2. Visualization method with flexbox, grid or both. (charts,tables,cards,buttons, kpi boxes, hero section, accordions, alerts, box groups, lists, dropdowns, timelines, paragraphs, texts, numbers, decreasing and increasing numbers)
-                        3. User interaction patterns (drilling down vs filtering vs overview)
-                        
-                        Keep the HTML simple - focus on structure, not final styling."""
+                    **ANALYSIS REQUIREMENTS:**
+                    1. Extract and utilize EVERY piece of data provided
+                    2. Create information hierarchies based on business impact
+                    3. Apply systematic component selection based on data characteristics
+                    4. Design layouts that facilitate data-driven decision making
+
+                    **OUTPUT REQUIREMENTS:**
+                    - 3 distinct layout approaches (layout-1, layout-2, layout-3)
+                    - Comprehensive use of all provided data
+                    - Clear information hierarchy in each layout
+                    - Proper CSS Grid/Flexbox organization
+                    - Responsive design with centered alignment
+                    - Professional styling with consistent spacing and borders
+
+                    Focus on creating layouts that help users understand and analyze the complete dataset, not just highlights."""
                 ),
             ]
 
@@ -70,89 +108,85 @@ class DashboardAgent:
         async def finalize_dashboard(
             state: AgentState,
         ) -> AgentState:
-            """Finalize user decided dashboard layout."""
+            """Finalize dashboard using data-driven architecture principles."""
             structured_model = self.client.with_structured_output(Layout)
 
             messages = [
                 SystemMessage(
-                    """You are an expert web developer specializing in creating data-driven UI components and dashboards. Your task is to generate a complete, self-contained web components with HTML, CSS, and JavaScript based on the provided UI component descriptors, and CSS styling guidelines.
+                    """You are a senior dashboard architect specializing in DATA-DRIVEN INFORMATION ARCHITECTURE. Your task is to create a comprehensive, professional dashboard that maximizes data utilization and user insights.
 
-                        ## PRIMARY OBJECTIVE:
-                        Transform the provided layout into an interactive, visually appealing UI component that follows the specified design patterns and styling requirements.
+                    ## FINALIZATION METHODOLOGY:
 
-                        ## INPUT PROCESSING STRATEGY:
+                    ### 1. COMPREHENSIVE DATA INTEGRATION
+                    - Implement EVERY data point from the selected layout
+                    - Ensure no information is omitted or simplified
+                    - Create derived metrics where valuable (percentages, ratios, growth rates)
+                    - Maintain data accuracy and consistency across all components
 
-                        ### 1. UI DESCRIPTOR INTEGRATION:
-                        - Use the UI descriptor as the primary guide for component structure and behavior
-                        - Follow any specified layout patterns, interaction models, or component types
-                        - Implement the recommended user experience patterns
-                        - Adapt the descriptor guidelines to fit the actual data structure
+                    ### 2. ADVANCED STYLING INTEGRATION
+                    - **CSS SYSTEM**: Leverage provided CSS classes and design tokens systematically
+                    - **COMPONENT LIBRARY**: Use appropriate components from the library (cards, stats, forms, status badges)
+                    - **LAYOUT SYSTEM**: Implement proper CSS Grid and Flexbox layouts
+                    - **RESPONSIVE DESIGN**: Ensure components adapt to different screen sizes
+                    - **VISUAL HIERARCHY**: Use typography, spacing, and color to guide user attention
 
-                        ### 2. CSS DESCRIPTOR UTILIZATION:
-                        - Apply the provided CSS styles as the foundation for the component's appearance
-                        - Ensure generated HTML structure is compatible with the provided CSS classes and selectors
-                        - Extend the provided styles with additional CSS as needed for data visualization
-                        - Maintain consistency with the established design system
+                    ### 3. INTERACTIVE DASHBOARD FEATURES
+                    - **Dynamic Data Binding**: Create JavaScript that makes data interactive
+                    - **Filtering & Sorting**: Add controls for data exploration
+                    - **Drill-down Capabilities**: Enable users to explore details
+                    - **Real-time Updates**: Implement functions for data refreshing
+                    - **Export Functionality**: Add options to export or share data
 
-                        ## TECHNICAL REQUIREMENTS:
+                    ### 4. PROFESSIONAL IMPLEMENTATION
+                    - **Semantic HTML**: Use proper HTML5 structure with accessibility
+                    - **CSS Architecture**: Build upon provided styles with additional enhancements
+                    - **JavaScript Logic**: Create interactive features and data manipulation
+                    - **Error Handling**: Implement graceful error states and loading indicators
+                    - **Performance**: Optimize for fast rendering and smooth interactions
 
-                        ### HTML GENERATION:
-                        - Generate semantic HTML5 structure that maps to the data hierarchy
-                        - Create elements that correspond to CSS selectors in the provided styles
-                        - Include proper data attributes for JavaScript targeting (data-id, data-value, etc.)
-                        - Implement accessible markup with ARIA labels and roles
-                        - Structure content to support the intended interactions and visualizations
+                    ### 5. PERPLEXITY LABS STYLE
+                    - **Modern Design**: Clean, minimal interface with strategic use of white space
+                    - **Data-First Approach**: Prioritize data visibility and accessibility
+                    - **Professional Typography**: Clear hierarchy and readable fonts
+                    - **Subtle Animations**: Smooth transitions and hover effects
+                    - **Intelligent Grouping**: Logical organization of related information
 
-                        ### CSS GENERATION:
-                        - Build upon the provided CSS descriptor styles
-                        - Add data-specific styling (charts, tables, cards, etc.)
-                        - Implement responsive behavior that complements the base styles
-                        - Create smooth transitions and hover effects
-                        - Ensure visual hierarchy matches data importance
+                    ### QUALITY STANDARDS:
+                    - **Complete Data Coverage**: Every metric from the dataset should be represented
+                    - **Professional Styling**: Consistent use of design system and CSS classes
+                    - **Interactive Elements**: Functional JavaScript for data exploration
+                    - **Responsive Layout**: Works perfectly across all device sizes
+                    - **Self-contained**: Ready to deploy in iframe without external dependencies
 
-                        ### JAVASCRIPT GENERATION:
-                        - Write vanilla JavaScript that brings the data to life
-                        - Implement data binding and dynamic updates
-                        - Create interactive features (filtering, sorting, drilling down)
-                        - Add animations and transitions for better UX
-                        - Include error handling and loading states
-                        - Optimize for performance with large datasets
-
-                        ## DATA-TO-UI MAPPING PATTERNS:
-
-                        **NUMERICAL DATA**: Convert to charts, gauges, progress bars, or KPI cards
-                        **CATEGORICAL DATA**: Present as bar charts, pie charts, or grouped layouts
-                        **TIME SERIES DATA**: Display as line charts, area charts, or timeline components
-                        **TABULAR DATA**: Create interactive tables with sorting and filtering
-                        **HIERARCHICAL DATA**: Build tree views, nested layouts, or drill-down interfaces
-                        **GEOSPATIAL DATA**: Generate map-based visualizations or location cards
-                        **COMPARATIVE DATA**: Design side-by-side comparisons or overlay visualizations
-
-                        ## QUALITY STANDARDS:
-                        - Ensure the component is fully self-contained and iframe-ready
-                        - Implement proper error handling for missing or malformed data
-                        - Create responsive layouts that work across all device sizes
-                        - Follow accessibility best practices (WCAG 2.1 AA compliance)
-                        - Optimize for fast rendering and smooth interactions
-                        - Include comprehensive data validation and sanitization
-
-                        ## OUTPUT FORMAT:
-                        Return a single layout with the complete page_title, HTML, CSS, and JavaScript implementation."""
+                    ### OUTPUT REQUIREMENTS:
+                    - Single comprehensive dashboard with complete page title, HTML, CSS, and JavaScript
+                    - Full utilization of provided UI descriptors and CSS styling
+                    - Implementation of selected layout structure with enhancements
+                    - Professional, production-ready code suitable for business use"""
                 ),
                 HumanMessage(
-                    f"""Create the final dashboard using the selected layout:
+                    f"""Create the final comprehensive dashboard using DATA-DRIVEN INFORMATION ARCHITECTURE:
 
-                        **SELECTED LAYOUT:** {state['selected_layout']}
-                        **UI DESCRIPTORS:** {state['ui_descriptor']}
-                        **CSS Styles:** {state['design_system']}
+                    **SELECTED LAYOUT:** {state['selected_layout']}
+                    **UI COMPONENT LIBRARY:** {state['ui_descriptor']}
+                    **CSS DESIGN SYSTEM:** {state['design_system']}
 
-                        Generate a single, complete dashboard based on the selected layout.
-                        
-                        Important:
-                        - Use the CSS for styling.
-                        - Use the same flexbox/grid structure of the selected layout.
-                        - Hardcode the informations in the HTML.
-                        """
+                    **IMPLEMENTATION REQUIREMENTS:**
+                    1. Use the selected layout structure as the foundation
+                    2. Integrate ALL data points from the original dataset
+                    3. Apply CSS design system classes and components systematically
+                    4. Create interactive JavaScript features for data exploration
+                    5. Maintain professional styling with consistent spacing and hierarchy
+                    6. Ensure responsive design with proper CSS Grid/Flexbox implementation
+
+                    **FINAL OUTPUT:**
+                    - Complete dashboard with title, HTML, CSS, and JavaScript
+                    - Comprehensive data representation and analysis capabilities
+                    - Professional styling using provided design system
+                    - Interactive features for enhanced user experience
+                    - Ready for production deployment in iframe environment
+
+                    Focus on creating a dashboard that would be suitable for executive presentations and business decision-making."""
                 ),
             ]
 
