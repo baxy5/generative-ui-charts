@@ -10,7 +10,7 @@ from schemas.dashboard_schema import AgentState, Layout, LayoutNode
 
 
 class DashboardAgent:
-    """Agent for generating dashboard layouts."""
+    """Agent for generating dashboard layouts using Perplexity-style analytics approach."""
 
     def __init__(self, client: Annotated[ChatOpenAI, Depends(get_gpt_client)]) -> None:
         self.client = client
@@ -21,44 +21,206 @@ class DashboardAgent:
         graph = StateGraph(AgentState)
 
         async def generate_layouts(state: AgentState):
-            """Generate three layouts from the data."""
+            """Generate three layouts using Perplexity-style analytics dashboard approach."""
             structured_model = self.client.with_structured_output(LayoutNode)
             messages = [
                 SystemMessage(
-                    """You are a UI layout designer expert. Generate 3 distinct layout approaches for the provided data and user request. Focus on:
+                    """You are a senior product designer and data visualization expert specializing in MODERN ANALYTICS INTERFACES, inspired by Perplexity Labs and leading data platforms. Your expertise is in creating intelligent, insight-driven dashboard experiences.
 
-                        1. **Layout Structure**: Different ways to organize the information
-                        2. **Visualization Approach**: Different chart types, table vs cards, etc.
-                        3. **User Experience**: Different interaction patterns
+                    ## CORE METHODOLOGY: PERPLEXITY-STYLE ANALYTICS DASHBOARD
 
-                        For each layout, provide:
-                        - A unique layout_id, with this format: layout-[number]
-                        - A descriptive page_title about the content of the dashboard
-                        - Simplified HTML structure with distinct layout approaches, build different flexbox or grid for each layout 
-                        - Basic CSS for the components, use white as the background of the components and grey for the borders. The borders must have 12px border radius. The dashboard layout must be middle centered and responsive.
+                    ### DESIGN PHILOSOPHY: INTELLIGENCE-FIRST INTERFACES
+                    **Core Principles:**
+                    - **Information Density**: Maximize insight per pixel without overwhelming users
+                    - **Contextual Hierarchy**: Surface the most relevant information based on user intent
+                    - **Progressive Disclosure**: Layer information depth through intuitive interactions
+                    - **Narrative Structure**: Guide users through data stories and insights
+                    - **Adaptive Layout**: Respond to data patterns and user behavior
 
-                        Important: Watch out for these specifically — do NOT skip them.
-                        - Use every information in the provided data.
-                        - Use flexbox, grid or both.
-                        - Do not create navigation components within the page.
-                        - Watch out for the layout_id format.
-                        - Page title should be describe the content of the page. No technicalities.
-                        - The data and informations must be hardcoded into the html elements.
+                    ### STEP 1: INTELLIGENT DATA CATEGORIZATION
+                    **Data Analysis Framework:**
+                    
+                    **HERO METRICS** (Top 20% importance):
+                    - Primary KPIs that drive business decisions
+                    - Growth indicators and performance trends
+                    - Critical alerts and threshold breaches
+                    - Real-time status indicators
+                    
+                    **CONTEXTUAL INSIGHTS** (Middle 60% importance):
+                    - Supporting metrics that explain the "why"
+                    - Comparative analysis and benchmarking
+                    - Trend analysis and pattern recognition
+                    - Segmentation and breakdown data
+                    
+                    **EXPLORATORY DATA** (Bottom 20% importance):
+                    - Detailed breakdowns and granular views
+                    - Historical data and archives
+                    - Auxiliary metrics and secondary KPIs
+                    - Raw data tables and exports
 
-                        Make each layout distinctly different in approach."""
+                    ### STEP 2: MODERN ANALYTICS LAYOUT PATTERNS
+                    **Layout Archetypes:**
+                    
+                    **EXECUTIVE COMMAND CENTER**:
+                    - Prominent hero section with key metrics
+                    - Real-time status grid with color-coded indicators
+                    - Trend visualization panels
+                    - Alert/notification sidebar
+                    
+                    **ANALYTICAL WORKBENCH**:
+                    - Multi-panel layout with coordinated views
+                    - Interactive filter bar at top
+                    - Primary chart area with supporting metrics
+                    - Data table with advanced sorting/filtering
+                    
+                    **PERFORMANCE MONITORING**:
+                    - Time-series dashboard with multiple metrics
+                    - Comparative views (current vs previous periods)
+                    - Breakdown panels by category/segment
+                    - Anomaly detection and alerts
+
+                    ### STEP 3: ADVANCED COMPONENT STRATEGY
+                    **Smart Component Selection:**
+                    
+                    **METRIC CARDS with CONTEXT**:
+                    - Large primary value with trend indicator
+                    - Sparkline or mini-chart for context
+                    - Comparison data (vs previous, vs target)
+                    - Color-coded status indicators
+                    
+                    **INTERACTIVE CHART PANELS**:
+                    - Primary visualization with multiple data series
+                    - Integrated controls for time range, filters
+                    - Drill-down capabilities
+                    - Export and sharing options
+                    
+                    **INSIGHT CARDS**:
+                    - AI-generated insights and recommendations
+                    - Anomaly detection alerts
+                    - Trend analysis summaries
+                    - Predictive indicators
+                    
+                    **DATA EXPLORATION TABLES**:
+                    - Advanced filtering and sorting
+                    - Inline editing capabilities
+                    - Export functionality
+                    - Pagination and performance optimization
+
+                    ### STEP 4: SOPHISTICATED LAYOUT ARCHITECTURE
+                    **Grid System Design:**
+                    
+                    **ASYMMETRIC LAYOUTS**:
+                    - Non-uniform grid patterns for visual interest
+                    - Varied component sizes based on importance
+                    - Strategic use of white space
+                    - Focal point creation through size variation
+                    
+                    **RESPONSIVE BREAKPOINTS**:
+                    - Desktop: Complex multi-column layouts
+                    - Tablet: Simplified 2-column with stacking
+                    - Mobile: Single-column with prioritized content
+                    - Touch-optimized interactions
+                    
+                    **DEPTH LAYERS**:
+                    - Background: Base grid and spacing
+                    - Content: Primary data visualizations
+                    - Interactive: Hover states and controls
+                    - Overlay: Modals and detailed views
+
+                    ### STEP 5: PERPLEXITY-INSPIRED STYLING
+                    **Visual Design Language:**
+                    
+                    **COLOR STRATEGY**:
+                    - Monochromatic base with strategic accent colors
+                    - Data-driven color coding (performance, status, categories)
+                    - Subtle gradients and shadows for depth
+                    - High contrast for accessibility
+                    
+                    **TYPOGRAPHY HIERARCHY**:
+                    - Clear distinction between data and labels
+                    - Consistent sizing scale (12px, 14px, 16px, 20px, 24px)
+                    - Strategic use of font weights
+                    - Optimal line height for readability
+                    
+                    **SPACING RHYTHM**:
+                    - 8px base unit for consistent spacing
+                    - Progressive spacing scale (8, 16, 24, 32, 48px)
+                    - Generous white space for breathing room
+                    - Aligned grid system
+
+                    ### LAYOUT GENERATION REQUIREMENTS:
+                    **MANDATORY SPECIFICATIONS:**
+                    - **Intelligence**: Prioritize most important data prominently
+                    - **Completeness**: Include ALL data points with smart hierarchy
+                    - **Sophistication**: Use advanced layout patterns and interactions
+                    - **Responsiveness**: Ensure optimal experience across all devices
+                    - **Accessibility**: Maintain WCAG 2.1 AA compliance
+                    - **Performance**: Optimize for fast loading and smooth interactions
+                    - **Format**: Create exactly 3 layouts: layout-1, layout-2, layout-3
+                    - **Branding**: Professional styling with consistent design language
+
+                    ### LAYOUT DIFFERENTIATION STRATEGY:
+                    **Layout 1: Executive Intelligence Hub**
+                    - Hero metrics with trend indicators
+                    - Real-time status dashboard
+                    - Executive summary cards
+                    - Strategic insight panels
+                    
+                    **Layout 2: Analytical Deep Dive**
+                    - Interactive chart workbench
+                    - Multi-dimensional data exploration
+                    - Advanced filtering and segmentation
+                    - Detailed data tables and exports
+                    
+                    **Layout 3: Performance Command Center**
+                    - Time-series monitoring dashboard
+                    - Comparative analysis views
+                    - Anomaly detection alerts
+                    - Predictive analytics panels
+
+                    Create 3 sophisticated layouts that demonstrate mastery of modern analytics interface design, each showcasing different aspects of intelligent data presentation."""
                 ),
                 HumanMessage(
-                    f"""Generate 3 different layout options for:
+                    f"""Create 3 PERPLEXITY-STYLE ANALYTICS DASHBOARDS using advanced interface design:
 
-                        **USER REQUEST:** {state['query']}
-                        **DATA:** {state['data']}
+                    **USER REQUEST:** {state['query']}
+                    **COMPREHENSIVE DATASET:** {state['data']}
 
-                        Create layouts that differ in:
-                        1. Information hierarchy (what's emphasized)
-                        2. Visualization method with flexbox, grid or both. (charts,tables,cards,buttons, kpi boxes, hero section, accordions, alerts, box groups, lists, dropdowns, timelines, paragraphs, texts, numbers, decreasing and increasing numbers)
-                        3. User interaction patterns (drilling down vs filtering vs overview)
-                        
-                        Keep the HTML simple - focus on structure, not final styling."""
+                    **ANALYTICS INTELLIGENCE REQUIREMENTS:**
+                    1. **Smart Data Prioritization**: Identify and prominently feature the most business-critical metrics
+                    2. **Contextual Insights**: Provide supporting data that explains performance and trends
+                    3. **Interactive Exploration**: Enable users to drill down and explore data relationships
+                    4. **Visual Storytelling**: Guide users through data narratives and insights
+                    5. **Responsive Intelligence**: Adapt layout and emphasis based on screen size and context
+
+                    **MODERN INTERFACE STANDARDS:**
+                    - **Sophisticated Grid Systems**: Asymmetric layouts with varied component sizes
+                    - **Advanced Typography**: Clear hierarchy with strategic font sizing and weights
+                    - **Intelligent Color Usage**: Data-driven color coding with accessibility considerations
+                    - **Micro-interactions**: Subtle animations and hover effects for enhanced UX
+                    - **Progressive Disclosure**: Layer information depth through intuitive interactions
+
+                    **LAYOUT SPECIFICATIONS:**
+                    - **Layout 1 (Executive Intelligence Hub)**: Focus on high-level KPIs and strategic insights
+                    - **Layout 2 (Analytical Deep Dive)**: Emphasize data exploration and detailed analysis
+                    - **Layout 3 (Performance Command Center)**: Highlight real-time monitoring and alerts
+
+                    **TECHNICAL REQUIREMENTS:**
+                    - Use ALL available data with intelligent hierarchy
+                    - Implement advanced CSS Grid and Flexbox layouts
+                    - Create responsive designs with mobile-first approach
+                    - Include interactive elements and data exploration features
+                    - Maintain professional styling with consistent design language
+                    - Ensure accessibility and performance optimization
+
+                    **PERPLEXITY-INSPIRED FEATURES:**
+                    - Clean, minimal aesthetic with strategic use of white space
+                    - Intelligent information density without overwhelming users
+                    - Contextual data relationships and insights
+                    - Progressive disclosure of complex information
+                    - Sophisticated yet intuitive navigation patterns
+
+                    Focus on creating dashboards that feel like premium analytics platforms, with intelligent data presentation and sophisticated user experience design."""
                 ),
             ]
 
@@ -70,89 +232,263 @@ class DashboardAgent:
         async def finalize_dashboard(
             state: AgentState,
         ) -> AgentState:
-            """Finalize user decided dashboard layout."""
+            """Finalize dashboard using Perplexity-style analytics approach."""
             structured_model = self.client.with_structured_output(Layout)
 
             messages = [
                 SystemMessage(
-                    """You are an expert web developer specializing in creating data-driven UI components and dashboards. Your task is to generate a complete, self-contained web components with HTML, CSS, and JavaScript based on the provided UI component descriptors, and CSS styling guidelines.
+                    """You are a senior product designer and full-stack developer specializing in PREMIUM ANALYTICS PLATFORMS like Perplexity Labs, Tableau, and modern data visualization tools. Your expertise is in creating production-ready, sophisticated dashboard experiences.
 
-                        ## PRIMARY OBJECTIVE:
-                        Transform the provided layout into an interactive, visually appealing UI component that follows the specified design patterns and styling requirements.
+                    ## FINALIZATION METHODOLOGY: PERPLEXITY-STYLE ANALYTICS IMPLEMENTATION
 
-                        ## INPUT PROCESSING STRATEGY:
+                    ### 1. ADVANCED INTERFACE ARCHITECTURE
+                    **Premium Dashboard Structure:**
+                    
+                    **HEADER INTELLIGENCE**:
+                    - Brand identity with professional typography
+                    - Real-time status indicators
+                    - Global search and filtering capabilities
+                    - User context and settings access
+                    
+                    **CONTENT ORCHESTRATION**:
+                    - Intelligent grid system with varied component sizes
+                    - Contextual sidebars with supporting information
+                    - Progressive disclosure through expandable sections
+                    - Coordinated views that respond to user interactions
+                    
+                    **NAVIGATION PATTERNS**:
+                    - Breadcrumb navigation for complex data hierarchies
+                    - Contextual actions and quick controls
+                    - Smooth transitions between views
+                    - Keyboard shortcuts for power users
 
-                        ### 1. UI DESCRIPTOR INTEGRATION:
-                        - Use the UI descriptor as the primary guide for component structure and behavior
-                        - Follow any specified layout patterns, interaction models, or component types
-                        - Implement the recommended user experience patterns
-                        - Adapt the descriptor guidelines to fit the actual data structure
+                    ### 2. SOPHISTICATED STYLING IMPLEMENTATION
+                    **Advanced CSS Architecture:**
+                    
+                    **DESIGN TOKENS & VARIABLES**:
+                    ```css
+                    /* Premium Color Palette */
+                    --primary-50: #f0f9ff;
+                    --primary-500: #3b82f6;
+                    --primary-900: #1e3a8a;
+                    --neutral-50: #fafafa;
+                    --neutral-100: #f5f5f5;
+                    --neutral-900: #0a0a0a;
+                    
+                    /* Data Visualization Colors */
+                    --data-positive: #10b981;
+                    --data-negative: #ef4444;
+                    --data-warning: #f59e0b;
+                    --data-info: #3b82f6;
+                    
+                    /* Spacing Scale */
+                    --space-xs: 0.5rem;    /* 8px */
+                    --space-sm: 0.75rem;   /* 12px */
+                    --space-md: 1rem;      /* 16px */
+                    --space-lg: 1.5rem;    /* 24px */
+                    --space-xl: 2rem;      /* 32px */
+                    --space-2xl: 3rem;     /* 48px */
+                    
+                    /* Typography Scale */
+                    --text-xs: 0.75rem;    /* 12px */
+                    --text-sm: 0.875rem;   /* 14px */
+                    --text-base: 1rem;     /* 16px */
+                    --text-lg: 1.125rem;   /* 18px */
+                    --text-xl: 1.25rem;    /* 20px */
+                    --text-2xl: 1.5rem;    /* 24px */
+                    --text-3xl: 1.875rem;  /* 30px */
+                    ```
+                    
+                    **ADVANCED LAYOUT PATTERNS**:
+                    ```css
+                    /* Intelligent Grid System */
+                    .dashboard-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        grid-auto-rows: minmax(200px, auto);
+                        gap: var(--space-lg);
+                        align-items: start;
+                    }
+                    
+                    /* Asymmetric Layout */
+                    .hero-metric { grid-column: span 2; grid-row: span 2; }
+                    .secondary-metric { grid-column: span 1; grid-row: span 1; }
+                    .chart-panel { grid-column: span 3; grid-row: span 2; }
+                    
+                    /* Responsive Breakpoints */
+                    @media (max-width: 768px) {
+                        .dashboard-grid {
+                            grid-template-columns: 1fr;
+                        }
+                        .hero-metric,
+                        .chart-panel {
+                            grid-column: span 1;
+                            grid-row: span 1;
+                        }
+                    }
+                    ```
 
-                        ### 2. CSS DESCRIPTOR UTILIZATION:
-                        - Apply the provided CSS styles as the foundation for the component's appearance
-                        - Ensure generated HTML structure is compatible with the provided CSS classes and selectors
-                        - Extend the provided styles with additional CSS as needed for data visualization
-                        - Maintain consistency with the established design system
+                    ### 3. PREMIUM COMPONENT IMPLEMENTATION
+                    **High-Quality Component Design:**
+                    
+                    **METRIC CARDS with INTELLIGENCE**:
+                    - Large primary value with semantic color coding
+                    - Trend indicators with directional arrows
+                    - Contextual comparison data (vs previous period)
+                    - Micro-charts for visual context
+                    - Interactive drill-down capabilities
+                    
+                    **CHART PANELS with SOPHISTICATION**:
+                    - Professional data visualization with proper scales
+                    - Interactive legends and data point tooltips
+                    - Zoom and pan capabilities for detailed exploration
+                    - Multiple chart types (line, bar, area, scatter)
+                    - Export functionality for data sharing
+                    
+                    **DATA TABLES with ADVANCED FEATURES**:
+                    - Smart column sizing and responsive behavior
+                    - Advanced sorting and filtering controls
+                    - Inline editing for data management
+                    - Pagination with performance optimization
+                    - Export options (CSV, PDF, Excel)
+                    
+                    **INSIGHT PANELS with AI-LIKE FEATURES**:
+                    - Automated insight generation
+                    - Anomaly detection and alerts
+                    - Predictive analytics displays
+                    - Recommendation systems
+                    - Natural language summaries
 
-                        ## TECHNICAL REQUIREMENTS:
+                    ### 4. INTERACTIVE JAVASCRIPT IMPLEMENTATION
+                    **Advanced Frontend Functionality:**
+                    
+                    **DATA BINDING & UPDATES**:
+                    ```javascript
+                    // Real-time data updates
+                    class DashboardController {
+                        constructor() {
+                            this.data = {};
+                            this.components = new Map();
+                            this.filters = new Map();
+                        }
+                        
+                        updateData(newData) {
+                            this.data = { ...this.data, ...newData };
+                            this.renderComponents();
+                        }
+                        
+                        applyFilters(filters) {
+                            this.filters = new Map([...this.filters, ...filters]);
+                            this.renderComponents();
+                        }
+                    }
+                    ```
+                    
+                    **INTERACTIVE FEATURES**:
+                    - Cross-filtering between components
+                    - Drill-down and drill-up navigation
+                    - Time range selection with brush controls
+                    - Dynamic data loading and caching
+                    - Keyboard navigation support
+                    
+                    **PERFORMANCE OPTIMIZATION**:
+                    - Virtual scrolling for large datasets
+                    - Lazy loading of off-screen components
+                    - Debounced search and filtering
+                    - Efficient re-rendering strategies
+                    - Memory management for long-running sessions
 
-                        ### HTML GENERATION:
-                        - Generate semantic HTML5 structure that maps to the data hierarchy
-                        - Create elements that correspond to CSS selectors in the provided styles
-                        - Include proper data attributes for JavaScript targeting (data-id, data-value, etc.)
-                        - Implement accessible markup with ARIA labels and roles
-                        - Structure content to support the intended interactions and visualizations
+                    ### 5. ACCESSIBILITY & USABILITY
+                    **Professional Standards:**
+                    
+                    **ACCESSIBILITY COMPLIANCE**:
+                    - WCAG 2.1 AA compliance
+                    - Screen reader optimization
+                    - Keyboard navigation support
+                    - High contrast mode support
+                    - Focus management and skip links
+                    
+                    **USER EXPERIENCE OPTIMIZATION**:
+                    - Loading states and progress indicators
+                    - Error handling with helpful messages
+                    - Responsive design for all devices
+                    - Touch-friendly interactions
+                    - Consistent interaction patterns
 
-                        ### CSS GENERATION:
-                        - Build upon the provided CSS descriptor styles
-                        - Add data-specific styling (charts, tables, cards, etc.)
-                        - Implement responsive behavior that complements the base styles
-                        - Create smooth transitions and hover effects
-                        - Ensure visual hierarchy matches data importance
+                    ### 6. PRODUCTION-READY IMPLEMENTATION
+                    **Enterprise-Grade Code:**
+                    
+                    **CODE ORGANIZATION**:
+                    - Modular component architecture
+                    - Separation of concerns (HTML, CSS, JS)
+                    - Consistent naming conventions
+                    - Comprehensive error handling
+                    - Performance monitoring hooks
+                    
+                    **DEPLOYMENT READINESS**:
+                    - Self-contained iframe compatibility
+                    - CDN-ready asset optimization
+                    - Progressive enhancement
+                    - Graceful degradation
+                    - Cross-browser compatibility
 
-                        ### JAVASCRIPT GENERATION:
-                        - Write vanilla JavaScript that brings the data to life
-                        - Implement data binding and dynamic updates
-                        - Create interactive features (filtering, sorting, drilling down)
-                        - Add animations and transitions for better UX
-                        - Include error handling and loading states
-                        - Optimize for performance with large datasets
+                    ### OUTPUT REQUIREMENTS:
+                    - **Premium Interface**: Sophisticated, professional dashboard design
+                    - **Complete Implementation**: Full HTML, CSS, and JavaScript
+                    - **Advanced Features**: Interactive elements and data exploration
+                    - **Responsive Design**: Optimal experience across all devices
+                    - **Production Quality**: Enterprise-ready code and implementation
+                    - **Accessibility**: WCAG 2.1 AA compliance
+                    - **Performance**: Optimized for fast loading and smooth interactions
 
-                        ## DATA-TO-UI MAPPING PATTERNS:
-
-                        **NUMERICAL DATA**: Convert to charts, gauges, progress bars, or KPI cards
-                        **CATEGORICAL DATA**: Present as bar charts, pie charts, or grouped layouts
-                        **TIME SERIES DATA**: Display as line charts, area charts, or timeline components
-                        **TABULAR DATA**: Create interactive tables with sorting and filtering
-                        **HIERARCHICAL DATA**: Build tree views, nested layouts, or drill-down interfaces
-                        **GEOSPATIAL DATA**: Generate map-based visualizations or location cards
-                        **COMPARATIVE DATA**: Design side-by-side comparisons or overlay visualizations
-
-                        ## QUALITY STANDARDS:
-                        - Ensure the component is fully self-contained and iframe-ready
-                        - Implement proper error handling for missing or malformed data
-                        - Create responsive layouts that work across all device sizes
-                        - Follow accessibility best practices (WCAG 2.1 AA compliance)
-                        - Optimize for fast rendering and smooth interactions
-                        - Include comprehensive data validation and sanitization
-
-                        ## OUTPUT FORMAT:
-                        Return a single layout with the complete page_title, HTML, CSS, and JavaScript implementation."""
+                    Create a dashboard that rivals the best analytics platforms in terms of design sophistication, user experience, and technical implementation."""
                 ),
                 HumanMessage(
-                    f"""Create the final dashboard using the selected layout:
+                    f"""Create the final PERPLEXITY-STYLE ANALYTICS DASHBOARD with premium implementation:
 
-                        **SELECTED LAYOUT:** {state['selected_layout']}
-                        **UI DESCRIPTORS:** {state['ui_descriptor']}
-                        **CSS Styles:** {state['design_system']}
+                    **SELECTED LAYOUT:** {state['selected_layout']}
+                    **COMPONENT LIBRARY:** {state['ui_descriptor']}
+                    **CSS DESIGN SYSTEM:** {state['design_system']}
 
-                        Generate a single, complete dashboard based on the selected layout.
-                        
-                        Important:
-                        - Use the CSS for styling.
-                        - Use the same flexbox/grid structure of the selected layout.
-                        - Hardcode the informations in the HTML.
-                        """
+                    **PREMIUM IMPLEMENTATION REQUIREMENTS:**
+                    1. **Sophisticated Interface Design**: Create a dashboard that feels like a premium analytics platform
+                    2. **Advanced Component Integration**: Use the component library to build complex, interactive elements
+                    3. **Intelligent Data Presentation**: Present data with smart hierarchy and contextual insights
+                    4. **Premium Styling**: Implement advanced CSS with sophisticated typography and spacing
+                    5. **Interactive Features**: Add JavaScript functionality for data exploration and user interaction
+                    6. **Responsive Excellence**: Ensure optimal experience across all devices and screen sizes
+
+                    **PERPLEXITY-INSPIRED FEATURES:**
+                    - **Clean Aesthetics**: Minimal design with strategic use of white space
+                    - **Intelligent Information Architecture**: Smart data organization and progressive disclosure
+                    - **Premium Typography**: Professional font hierarchy with excellent readability
+                    - **Sophisticated Interactions**: Smooth animations and intuitive user flows
+                    - **Data-Driven Insights**: Contextual information and intelligent data relationships
+
+                    **TECHNICAL SPECIFICATIONS:**
+                    - **Advanced CSS Grid**: Implement sophisticated, responsive grid systems
+                    - **Component Mastery**: Use all available components with professional styling
+                    - **Interactive JavaScript**: Create dynamic, data-driven functionality
+                    - **Performance Optimization**: Ensure fast loading and smooth interactions
+                    - **Accessibility Standards**: Maintain WCAG 2.1 AA compliance
+                    - **Production Ready**: Enterprise-grade code suitable for deployment
+
+                    **ANALYTICS PLATFORM FEATURES:**
+                    - **Real-time Data Display**: Present data with live updates and status indicators
+                    - **Advanced Filtering**: Implement sophisticated search and filter capabilities
+                    - **Data Exploration**: Enable users to drill down and explore data relationships
+                    - **Export Functionality**: Provide options for data sharing and export
+                    - **Customization Options**: Allow users to personalize their dashboard experience
+
+                    **FINAL OUTPUT:**
+                    - Complete dashboard with premium design and functionality
+                    - Comprehensive data integration with intelligent presentation
+                    - Advanced interactive features for enhanced user experience
+                    - Professional styling that rivals leading analytics platforms
+                    - Production-ready code suitable for enterprise deployment
+                    - Responsive design optimized for all devices and use cases
+
+                    Focus on creating a dashboard that demonstrates mastery of modern analytics interface design, with the sophistication and polish of premium data visualization platforms."""
                 ),
             ]
 
