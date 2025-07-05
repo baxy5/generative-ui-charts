@@ -83,6 +83,12 @@ body {
   background-color: var(--bg-tertiary);
 }
 
+/* Missing utility class for light background */
+.bg-light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
 .text-light {
   color: var(--text-light);
 }
